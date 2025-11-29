@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use App\Models\SalesDAO;
+use App\Models\Logger;
 
 class SaleController {
     private $salesDAO;
@@ -43,6 +44,8 @@ class SaleController {
 
         $saleId = $this->salesDAO->createSale($userId, $total, $items);
         if ($saleId) {
+            // Log successful sale
+            Logger::getInstance()->logSale($userId, $saleId, $total);
             return $saleId;
         }
         return "Error al procesar la venta.";

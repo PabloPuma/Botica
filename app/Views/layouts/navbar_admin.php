@@ -32,6 +32,11 @@ $current_route = $_GET['route'] ?? '';
                         <i class="bi bi-cart-check-fill me-1"></i> Ventas
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link <?php echo $current_route === 'admin/logs' ? 'active' : ''; ?>" href="index.php?route=admin/logs">
+                        <i class="bi bi-file-text-fill me-1"></i> Logs
+                    </a>
+                </li>
                 <li class="nav-item ms-lg-3">
                     <a class="nav-link btn btn-outline-warning btn-sm text-white border-warning" href="index.php?route=logout">
                         <i class="bi bi-box-arrow-right me-1"></i> Salir

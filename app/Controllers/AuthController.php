@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use App\Models\UserDAO;
+use App\Models\Logger;
 
 class AuthController {
     private $userDAO;
@@ -20,14 +21,27 @@ class AuthController {
             $_SESSION['usuario_id'] = $user['id'];
             $_SESSION['nombre'] = $user['nombre'];
             $_SESSION['rol'] = $user['rol'];
+            
+            // Log successful login
+            Logger::getInstance()->logLogin($user['id'], $username, true);
+            
             return true;
         }
+        
+        // Log failed login attempt
+        Logger::getInstance()->logLogin(null, $username, false);
+        
         return false;
     }
 
     public function logout() {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
+        }
+        
+        // Log logout before clearing session
+        if (isset($_SESSION['usuario_id']) && isset($_SESSION['nombre'])) {
+            Logger::getInstance()->logLogout($_SESSION['usuario_id'], $_SESSION['nombre']);
         }
         
         // Clear cart for admin and vendedor roles before destroying session
@@ -54,6 +68,8 @@ class AuthController {
         // Ideally: if ($this->userDAO->findByUsername($usuario)) return "Usuario ya existe";
 
         if ($this->userDAO->create($nombre, $usuario, $clave, $rol)) {
+            // Log successful registration
+            Logger::getInstance()->logRegistro($usuario, $rol);
             return true;
         }
         return "Error al registrar usuario.";

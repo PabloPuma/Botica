@@ -81,6 +81,10 @@ switch ($route) {
         requireAuth(['admin']);
         require __DIR__ . '/../app/Views/admin/ventas.php';
         break;
+    case 'admin/logs':
+        requireAuth(['admin']);
+        require __DIR__ . '/../app/Views/admin/logs.php';
+        break;
 
     // --- CLIENTE ROUTES ---
     case 'cliente/dashboard':

@@ -3,6 +3,7 @@ namespace App\Controllers;
 
 use App\Config\Database;
 use App\Models\UserDAO;
+use App\Models\Logger;
 
 class AdminController {
     private $db;
@@ -34,6 +35,15 @@ class AdminController {
         }
 
         if ($this->userDAO->create($nombre, $usuario, $clave, $rol)) {
+            // Log user creation
+            if (isset($_SESSION['usuario_id'])) {
+                Logger::getInstance()->logUserAction(
+                    $_SESSION['usuario_id'], 
+                    'Crear usuario', 
+                    $usuario, 
+                    "Rol: {$rol}"
+                );
+            }
             return true;
         }
         return "Error al crear usuario.";
@@ -45,9 +55,24 @@ class AdminController {
             return "No puedes eliminar tu propia cuenta.";
         }
         
+        // Get user info before deletion for logging
+        $stmt_info = $this->db->prepare("SELECT usuario FROM usuarios WHERE id = ?");
+        $stmt_info->bind_param("i", $id);
+        $stmt_info->execute();
+        $result = $stmt_info->get_result();
+        $user_info = $result->fetch_assoc();
+        
         $stmt = $this->db->prepare("DELETE FROM usuarios WHERE id = ?");
         $stmt->bind_param("i", $id);
         if ($stmt->execute()) {
+            // Log user deletion
+            if (isset($_SESSION['usuario_id']) && $user_info) {
+                Logger::getInstance()->logUserAction(
+                    $_SESSION['usuario_id'], 
+                    'Eliminar usuario', 
+                    $user_info['usuario']
+                );
+            }
             return true;
         }
         return "Error al eliminar usuario.";

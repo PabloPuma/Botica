@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 28-11-2025 a las 03:26:41
+-- Tiempo de generación: 29-11-2025 a las 03:56:25
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.0.28
 
@@ -73,6 +73,23 @@ CREATE TABLE `historial_stock` (
   `tipo_movimiento` enum('entrada','salida','venta') NOT NULL,
   `cantidad` int(11) NOT NULL,
   `fecha` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `logs`
+--
+
+CREATE TABLE `logs` (
+  `id` int(11) NOT NULL,
+  `id_usuario` int(11) DEFAULT NULL,
+  `tipo_evento` enum('login','logout','registro','venta','carrito','producto','usuario','error') NOT NULL,
+  `descripcion` text NOT NULL,
+  `ip_address` varchar(45) DEFAULT NULL,
+  `user_agent` varchar(255) DEFAULT NULL,
+  `fecha` datetime DEFAULT current_timestamp(),
+  `nivel` enum('info','warning','error') DEFAULT 'info'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -199,6 +216,18 @@ ALTER TABLE `historial_stock`
   ADD KEY `id_producto` (`id_producto`);
 
 --
+-- Indices de la tabla `logs`
+--
+ALTER TABLE `logs`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_usuario` (`id_usuario`),
+  ADD KEY `tipo_evento` (`tipo_evento`),
+  ADD KEY `nivel` (`nivel`),
+  ADD KEY `fecha` (`fecha`),
+  ADD KEY `idx_logs_fecha_tipo` (`fecha`,`tipo_evento`),
+  ADD KEY `idx_logs_usuario_fecha` (`id_usuario`,`fecha`);
+
+--
 -- Indices de la tabla `productos`
 --
 ALTER TABLE `productos`
@@ -238,6 +267,12 @@ ALTER TABLE `detalle_ventas`
 --
 ALTER TABLE `historial_stock`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+
+--
+-- AUTO_INCREMENT de la tabla `logs`
+--
+ALTER TABLE `logs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `productos`
@@ -280,6 +315,12 @@ ALTER TABLE `detalle_venta`
 --
 ALTER TABLE `historial_stock`
   ADD CONSTRAINT `historial_stock_ibfk_1` FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id`);
+
+--
+-- Filtros para la tabla `logs`
+--
+ALTER TABLE `logs`
+  ADD CONSTRAINT `logs_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`) ON DELETE SET NULL;
 
 --
 -- Filtros para la tabla `ventas`
