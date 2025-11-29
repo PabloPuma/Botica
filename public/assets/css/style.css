@@ -1,0 +1,195 @@
+/* Global Styles */
+:root {
+    --primary-color: #5865f2;
+    --primary-hover: #4752c4;
+    --bg-dark: #2c2f33;
+    --bg-darker: #202225;
+    --text-light: #f0f0f0;
+    --text-muted: #b9bbbe;
+    --accent-blue: #00b0f4;
+    --error-color: #ff6666;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+}
+
+/* Login Page Styles */
+.login-body {
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    display: flex;
+    height: 100vh;
+}
+
+.left-side {
+    flex: 1;
+    background-image: url('../img/frutas.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.right-side {
+    flex: 1;
+    background-color: #36393f;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-box {
+    background-color: #2f3136;
+    padding: 40px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+
+.login-box h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: normal;
+}
+
+.login-box label {
+    display: block;
+    margin-top: 15px;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.login-box input[type="text"],
+.login-box input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    background-color: var(--bg-darker);
+    color: var(--text-light);
+}
+
+.login-box input:focus {
+    outline: 2px solid #7289da;
+}
+
+.login-btn {
+    margin-top: 25px;
+    width: 100%;
+    padding: 12px;
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-btn:hover {
+    background-color: var(--primary-hover);
+}
+
+.register-link {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 0.9rem;
+}
+
+.register-link a {
+    color: var(--accent-blue);
+    text-decoration: none;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}
+
+.error-msg {
+    color: var(--error-color);
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+/* Dashboard / Vendedor Styles */
+.stat-card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+
+.stat-icon {
+    font-size: 2.5rem;
+    opacity: 0.9;
+}
+
+.content-card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.welcome-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+}
+
+.badge-stock {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+}
+
+.quick-action-btn {
+    border-radius: 8px;
+    padding: 1rem;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.quick-action-btn:hover {
+    transform: translateX(4px);
+}
+
+/* Navbar Styles */
+.navbar-custom {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.navbar-custom .nav-link {
+    color: rgba(255, 255, 255, 0.85);
+    transition: all 0.2s;
+    font-weight: 500;
+}
+
+.navbar-custom .nav-link:hover {
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+.navbar-custom .nav-link.active {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+.navbar-brand {
+    font-size: 1.3rem;
+    letter-spacing: 0.5px;
+}

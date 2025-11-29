@@ -1,0 +1,8 @@
+/* Footer Styles */
+footer {
+    margin-top: auto;
+    padding: 1rem 0;
+    background-color: #f8f9fa;
+    text-align: center;
+    border-top: 1px solid #e9ecef;
+}
