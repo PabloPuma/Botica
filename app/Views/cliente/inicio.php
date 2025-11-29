@@ -42,7 +42,7 @@ $productos = $productController->index();
         <?php while($prod = $productos->fetch_assoc()): ?>
         <div class="col-md-3 mb-4 product-card" data-name="<?php echo strtolower(htmlspecialchars($prod['nombre'])); ?>" data-category="<?php echo strtolower(htmlspecialchars($prod['categoria'])); ?>">
             <div class="card h-100 shadow-sm border-0">
-                <img src="assets/img/<?php echo htmlspecialchars($prod['imagen']); ?>" class="card-img-top" alt="..." style="height:200px;object-fit:contain;padding:10px;">
+                <img src="assets/<?php echo htmlspecialchars($prod['imagen']); ?>" class="card-img-top" alt="..." style="height:200px;object-fit:contain;padding:10px;">
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title"><?php echo htmlspecialchars($prod['nombre']); ?></h5>
                     <p class="card-text text-muted small"><?php echo htmlspecialchars($prod['categoria']); ?></p>

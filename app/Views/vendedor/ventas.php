@@ -128,7 +128,7 @@ $total = 0;
                 <?php while($prod = $productos->fetch_assoc()): ?>
                 <div class="col-md-4 mb-4 product-card" data-name="<?php echo strtolower(htmlspecialchars($prod['nombre'])); ?>" data-category="<?php echo strtolower(htmlspecialchars($prod['categoria'])); ?>">
                     <div class="card h-100">
-                        <img src="assets/img/<?php echo htmlspecialchars($prod['imagen']); ?>" class="card-img-top" alt="..." style="height:150px;object-fit:contain;">
+                        <img src="assets/<?php echo htmlspecialchars($prod['imagen']); ?>" class="card-img-top" alt="..." style="height:150px;object-fit:contain;">
                         <div class="card-body d-flex flex-column">
                             <h5 class="card-title"><?php echo htmlspecialchars($prod['nombre']); ?></h5>
                             <p class="card-text text-muted small"><?php echo htmlspecialchars($prod['categoria']); ?></p>
