@@ -28,7 +28,7 @@ class SaleController {
         return $this->salesDAO->removeFromCart($userId, $productId);
     }
 
-    public function checkout($userId) {
+    public function checkout($userId, $deliveryMethod = 'tienda') {
         $cart = $this->salesDAO->getCartByUserId($userId);
         $items = [];
         $total = 0;
@@ -42,7 +42,7 @@ class SaleController {
             return "El carrito está vacío.";
         }
 
-        $saleId = $this->salesDAO->createSale($userId, $total, $items);
+        $saleId = $this->salesDAO->createSale($userId, $total, $items, $deliveryMethod);
         if ($saleId) {
             // Log successful sale
             Logger::getInstance()->logSale($userId, $saleId, $total);

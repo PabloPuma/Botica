@@ -63,13 +63,13 @@ class SalesDAO {
     }
 
     // Checkout Operations
-    public function createSale($userId, $total, $items) {
+    public function createSale($userId, $total, $items, $deliveryMethod = 'tienda') {
         $this->db->begin_transaction();
 
         try {
             // 1. Create Sale Record
-            $stmt = $this->db->prepare("INSERT INTO ventas (id_usuario, total, fecha) VALUES (?, ?, NOW())");
-            $stmt->bind_param("id", $userId, $total);
+            $stmt = $this->db->prepare("INSERT INTO ventas (id_usuario, total, fecha, metodo_entrega) VALUES (?, ?, NOW(), ?)");
+            $stmt->bind_param("ids", $userId, $total, $deliveryMethod);
             $stmt->execute();
             $saleId = $this->db->insert_id;
 

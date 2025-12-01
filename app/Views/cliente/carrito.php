@@ -12,12 +12,22 @@ $error = '';
 
 // Handle Checkout
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['checkout'])) {
-    $res = $saleController->checkout($id_usuario);
+    $deliveryMethod = $_POST['delivery_method'] ?? 'tienda';
+    $res = $saleController->checkout($id_usuario, $deliveryMethod);
     if (is_numeric($res)) {
         $success = "¡Pedido realizado con éxito! ID: " . $res;
     } else {
         $error = $res;
     }
+}
+
+// Handle Update Quantity
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_quantity'])) {
+    $id_producto = $_POST['id_producto'];
+    $nueva_cantidad = (int)$_POST['nueva_cantidad'];
+    $saleController->updateCartItem($id_usuario, $id_producto, $nueva_cantidad);
+    header("Location: index.php?route=cliente/carrito");
+    exit();
 }
 
 // Handle Remove
@@ -57,13 +67,26 @@ $total = 0;
                             $total += $subtotal;
                     ?>
                     <tr>
-                        <td class="fw-medium"><?php echo htmlspecialchars($item['nombre']); ?></td>
+                        <td class="fw-medium">
+                            <div class="d-flex align-items-center">
+                                <img src="assets/<?php echo htmlspecialchars($item['imagen']); ?>" alt="" style="width: 50px; height: 50px; object-fit: cover; margin-right: 10px;" class="rounded">
+                                <div>
+                                    <?php echo htmlspecialchars($item['nombre']); ?>
+                                </div>
+                            </div>
+                        </td>
                         <td>S/ <?php echo number_format($item['precio'], 2); ?></td>
-                        <td><?php echo $item['cantidad']; ?></td>
+                        <td style="width: 150px;">
+                            <form method="POST" class="d-flex">
+                                <input type="hidden" name="id_producto" value="<?php echo $item['id_producto']; ?>">
+                                <input type="hidden" name="update_quantity" value="1">
+                                <input type="number" name="nueva_cantidad" value="<?php echo $item['cantidad']; ?>" min="1" class="form-control form-control-sm me-2" onchange="this.form.submit()">
+                            </form>
+                        </td>
                         <td class="fw-bold text-primary">S/ <?php echo number_format($subtotal, 2); ?></td>
                         <td>
                             <a href="index.php?route=cliente/carrito&remove=<?php echo $item['id_producto']; ?>" class="btn btn-sm btn-outline-danger">
-                                <i class="bi bi-trash"></i> Eliminar
+                                <i class="bi bi-trash"></i>
                             </a>
                         </td>
                     </tr>
@@ -86,12 +109,37 @@ $total = 0;
     </div>
 
     <?php if ($total > 0): ?>
-    <div class="d-flex justify-content-end mt-4">
-        <form method="POST">
-            <button type="submit" name="checkout" class="btn btn-success btn-lg px-5">
-                <i class="bi bi-credit-card"></i> Pagar Ahora
-            </button>
-        </form>
+    <div class="row mt-4">
+        <div class="col-md-6 offset-md-6">
+            <div class="card">
+                <div class="card-header bg-white fw-bold">
+                    <i class="bi bi-truck"></i> Método de Entrega
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        <div class="mb-3">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="delivery_method" id="deliveryTienda" value="tienda" checked>
+                                <label class="form-check-label" for="deliveryTienda">
+                                    <i class="bi bi-shop"></i> Recoger en Tienda (Gratis)
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="delivery_method" id="deliveryHome" value="delivery">
+                                <label class="form-check-label" for="deliveryHome">
+                                    <i class="bi bi-bicycle"></i> Delivery a Domicilio
+                                </label>
+                            </div>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" name="checkout" class="btn btn-success btn-lg">
+                                <i class="bi bi-credit-card"></i> Pagar Ahora
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
     <?php endif; ?>
 </div>
