@@ -33,6 +33,11 @@ $current_route = $_GET['route'] ?? '';
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link <?php echo $current_route === 'admin/historial' ? 'active' : ''; ?>" href="index.php?route=admin/historial">
+                        <i class="bi bi-clock-history me-1"></i> Historial
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link <?php echo $current_route === 'admin/logs' ? 'active' : ''; ?>" href="index.php?route=admin/logs">
                         <i class="bi bi-file-text-fill me-1"></i> Logs
                     </a>

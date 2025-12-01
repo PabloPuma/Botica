@@ -95,4 +95,51 @@ class SalesDAO {
             return false;
         }
     }
+    // History & Export Operations
+    public function getSalesHistory($filters = []) {
+        $sql = "SELECT v.id, v.fecha, v.total, u.nombre as usuario_nombre, u.rol, u.usuario 
+                FROM ventas v 
+                JOIN usuarios u ON v.id_usuario = u.id 
+                WHERE 1=1";
+        
+        $types = "";
+        $params = [];
+
+        // Filter by Date Range
+        if (!empty($filters['start_date'])) {
+            $sql .= " AND DATE(v.fecha) >= ?";
+            $types .= "s";
+            $params[] = $filters['start_date'];
+        }
+        if (!empty($filters['end_date'])) {
+            $sql .= " AND DATE(v.fecha) <= ?";
+            $types .= "s";
+            $params[] = $filters['end_date'];
+        }
+
+        // Filter by Specific User ID (for Client/Vendor self-view or Admin filtering)
+        if (!empty($filters['user_id'])) {
+            $sql .= " AND v.id_usuario = ?";
+            $types .= "i";
+            $params[] = $filters['user_id'];
+        }
+
+        // Filter by Role (Admin view)
+        if (!empty($filters['role'])) {
+            $sql .= " AND u.rol = ?";
+            $types .= "s";
+            $params[] = $filters['role'];
+        }
+
+        $sql .= " ORDER BY v.fecha DESC";
+
+        $stmt = $this->db->prepare($sql);
+        
+        if (!empty($params)) {
+            $stmt->bind_param($types, ...$params);
+        }
+        
+        $stmt->execute();
+        return $stmt->get_result();
+    }
 }

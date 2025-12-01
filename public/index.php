@@ -7,6 +7,7 @@ use App\Controllers\AuthController;
 use App\Controllers\ProductController;
 use App\Controllers\SaleController;
 use App\Controllers\AdminController;
+use App\Controllers\ExportController;
 
 // Simple Router
 $route = $_GET['route'] ?? 'login';
@@ -84,6 +85,17 @@ switch ($route) {
     case 'admin/logs':
         requireAuth(['admin']);
         require __DIR__ . '/../app/Views/admin/logs.php';
+        break;
+    case 'admin/historial':
+        requireAuth(['admin']);
+        require __DIR__ . '/../app/Views/admin/historial_ventas.php';
+        break;
+
+    // --- EXPORT ROUTES ---
+    case 'export/history':
+        requireAuth(['admin', 'vendedor', 'cliente']);
+        $exporter = new ExportController();
+        $exporter->exportHistory();
         break;
 
     // --- CLIENTE ROUTES ---

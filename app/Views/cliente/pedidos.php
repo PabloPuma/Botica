@@ -16,12 +16,51 @@ $pedidos = $stmt->get_result();
 ?>
 
 <div class="container mt-4">
-    <h2>📦 Mis Pedidos</h2>
-    <p class="text-muted">Historial de tus compras realizadas.</p>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>📦 Mis Pedidos</h2>
+        <a href="index.php?route=cliente/dashboard" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Volver
+        </a>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="GET" action="index.php" class="row g-3 align-items-end">
+                <input type="hidden" name="route" value="cliente/pedidos">
+                
+                <div class="col-md-4">
+                    <label class="form-label">Fecha Inicio</label>
+                    <input type="date" id="startDate" name="start_date" class="form-control" value="<?php echo $_GET['start_date'] ?? ''; ?>">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Fecha Fin</label>
+                    <input type="date" id="endDate" name="end_date" class="form-control" value="<?php echo $_GET['end_date'] ?? ''; ?>">
+                </div>
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-primary me-2">
+                        <i class="bi bi-filter"></i> Filtrar
+                    </button>
+                    <button type="button" onclick="exportToExcel()" class="btn btn-success">
+                        <i class="bi bi-file-earmark-excel"></i> Exportar Excel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <div class="row">
-        <?php if ($pedidos && $pedidos->num_rows > 0): ?>
-            <?php while($p = $pedidos->fetch_assoc()): ?>
+        <?php 
+        $salesDAO = new \App\Models\SalesDAO();
+        $filters = [
+            'user_id' => $_SESSION['usuario_id'],
+            'start_date' => $_GET['start_date'] ?? null,
+            'end_date' => $_GET['end_date'] ?? null
+        ];
+        $pedidos = $salesDAO->getSalesHistory($filters);
+
+        if ($pedidos && $pedidos->num_rows > 0): 
+            while($p = $pedidos->fetch_assoc()): 
+        ?>
             <div class="col-md-6 mb-3">
                 <div class="card shadow-sm">
                     <div class="card-header bg-white d-flex justify-content-between align-items-center">
@@ -41,11 +80,24 @@ $pedidos = $stmt->get_result();
         <?php else: ?>
             <div class="col-12 text-center py-5">
                 <i class="bi bi-bag-x text-muted" style="font-size: 3rem;"></i>
-                <p class="mt-3">Aún no has realizado ningún pedido.</p>
+                <p class="mt-3">No se encontraron pedidos en este periodo.</p>
                 <a href="index.php?route=cliente/dashboard" class="btn btn-primary">Ir a comprar</a>
             </div>
         <?php endif; ?>
     </div>
 </div>
+
+<script>
+function exportToExcel() {
+    const startDate = document.getElementById('startDate').value;
+    const endDate = document.getElementById('endDate').value;
+    
+    let url = 'index.php?route=export/history';
+    if (startDate) url += '&start_date=' + startDate;
+    if (endDate) url += '&end_date=' + endDate;
+    
+    window.open(url, '_blank');
+}
+</script>
 
 <?php require __DIR__ . '/../layouts/footer.php'; ?>
