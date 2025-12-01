@@ -1,0 +1,12 @@
+/* Input Enhancements */
+.form-control-pharmacy {
+    border: 2px solid var(--color-light-cyan);
+    border-radius: var(--radius-md);
+    padding: 0.75rem;
+    transition: all 0.3s ease;
+}
+
+.form-control-pharmacy:focus {
+    border-color: var(--color-pharmacy-green);
+    box-shadow: 0 0 0 0.25rem rgba(76, 175, 80, 0.25);
+}

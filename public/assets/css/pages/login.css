@@ -1,0 +1,33 @@
+/* Dark Mode Login Container */
+.dark-mode-container {
+    background: var(--gradient-dark);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dark-mode-card {
+    background: var(--color-dark-card);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xl);
+    box-shadow: var(--shadow-xl);
+    border: 2px solid var(--color-dark-accent);
+}
+
+.dark-mode-card .form-control {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.dark-mode-card .form-control:focus {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: var(--color-dark-accent);
+    color: white;
+    box-shadow: 0 0 0 0.25rem rgba(76, 175, 80, 0.25);
+}
+
+.dark-mode-card .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}

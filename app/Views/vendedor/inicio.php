@@ -20,11 +20,19 @@ $productos_criticos = $db->query("SELECT nombre, cantidad FROM productos WHERE c
 
 <div class="container-fluid px-4 py-4">
     <!-- Welcome Section -->
-    <div class="welcome-section">
-        <h1 class="display-5 fw-bold mb-2">
-            <i class="bi bi-person-circle"></i> Bienvenido, <?php echo htmlspecialchars($nombre_vendedor); ?>
-        </h1>
-        <p class="lead mb-0">Panel de Control - <?php echo date('d/m/Y'); ?></p>
+    <!-- Welcome Section -->
+    <div class="pharmacy-card mb-4 p-4 text-white" style="background: var(--gradient-primary); border-radius: var(--radius-lg);">
+        <div class="d-flex align-items-center">
+            <div class="rounded-circle bg-white bg-opacity-25 p-3 me-3">
+                <i class="bi bi-person-badge-fill fs-2"></i>
+            </div>
+            <div>
+                <h1 class="display-6 fw-bold mb-1">Bienvenido, <?php echo htmlspecialchars($nombre_vendedor); ?></h1>
+                <p class="lead mb-0 fs-6 opacity-75">
+                    <i class="bi bi-calendar-check me-2"></i>Panel de Control - <?php echo date('d/m/Y'); ?>
+                </p>
+            </div>
+        </div>
     </div>
 
     <!-- Estadísticas principales -->

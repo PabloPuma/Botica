@@ -1,0 +1,6 @@
+/* Alert Enhancements */
+.alert-pharmacy {
+    border-radius: var(--radius-md);
+    border-left: 4px solid var(--color-pharmacy-green);
+    background: var(--color-light-green);
+}

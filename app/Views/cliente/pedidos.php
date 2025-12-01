@@ -17,7 +17,7 @@ $pedidos = $stmt->get_result();
 
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>📦 Mis Pedidos</h2>
+        <h2><i class="bi bi-bag-check-fill me-2"></i>Mis Pedidos</h2>
         <a href="index.php?route=cliente/dashboard" class="btn btn-outline-secondary">
             <i class="bi bi-arrow-left"></i> Volver
         </a>

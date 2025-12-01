@@ -1,0 +1,48 @@
+/* ===================================
+   CSS VARIABLES - DESIGN SYSTEM
+   =================================== */
+:root {
+    /* Primary Pharmacy Colors */
+    --color-medical-blue: #2D5F8D;
+    --color-pharmacy-green: #4CAF50;
+    --color-clean-white: #FFFFFF;
+    --color-light-cyan: #E3F2FD;
+    --color-light-green: #F1F8E9;
+
+    /* Dark Mode (Login) */
+    --color-dark-bg: #1A1A2E;
+    --color-dark-card: #16213E;
+    --color-dark-accent: #4CAF50;
+
+    /* Status Colors */
+    --color-success: #4CAF50;
+    --color-warning: #FFA726;
+    --color-danger: #EF5350;
+    --color-info: #29B6F6;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, #2D5F8D 0%, #4CAF50 100%);
+    --gradient-light: linear-gradient(135deg, #E3F2FD 0%, #F1F8E9 100%);
+    --gradient-dark: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
+
+    /* Typography */
+    --font-primary: 'Poppins', sans-serif;
+
+    /* Spacing */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+
+    /* Border Radius */
+    --radius-sm: 0.25rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 1rem;
+
+    /* Shadows */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
+}

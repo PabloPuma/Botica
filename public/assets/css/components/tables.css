@@ -1,0 +1,20 @@
+/* Tables */
+.pharmacy-table {
+    background: white;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+
+.pharmacy-table thead {
+    background: var(--gradient-primary);
+    color: white;
+}
+
+.pharmacy-table tbody tr {
+    transition: background-color 0.3s ease;
+}
+
+.pharmacy-table tbody tr:hover {
+    background-color: var(--color-light-cyan);
+}

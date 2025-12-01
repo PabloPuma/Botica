@@ -19,11 +19,19 @@ $ingresos_hoy = $db->query("SELECT COALESCE(SUM(total), 0) as total FROM ventas 
 
 <div class="container-fluid px-4 py-4">
     <!-- Welcome Section -->
-    <div class="welcome-section" style="background: linear-gradient(135deg, #2c3e50 0%, #4ca1af 100%);">
-        <h1 class="display-5 fw-bold mb-2">
-            <i class="bi bi-shield-lock"></i> Bienvenido, <?php echo htmlspecialchars($nombre_admin); ?>
-        </h1>
-        <p class="lead mb-0">Panel de Administración - <?php echo date('d/m/Y'); ?></p>
+    <!-- Welcome Section -->
+    <div class="pharmacy-card mb-4 p-4 text-white" style="background: var(--gradient-primary); border-radius: var(--radius-lg);">
+        <div class="d-flex align-items-center">
+            <div class="rounded-circle bg-white bg-opacity-25 p-3 me-3">
+                <i class="bi bi-shield-lock-fill fs-2"></i>
+            </div>
+            <div>
+                <h1 class="display-6 fw-bold mb-1">Bienvenido, <?php echo htmlspecialchars($nombre_admin); ?></h1>
+                <p class="lead mb-0 fs-6 opacity-75">
+                    <i class="bi bi-calendar-event me-2"></i>Panel de Administración - <?php echo date('d/m/Y'); ?>
+                </p>
+            </div>
+        </div>
     </div>
 
     <!-- Estadísticas principales -->
