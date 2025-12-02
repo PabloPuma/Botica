@@ -52,3 +52,26 @@
     box-shadow: var(--shadow-md);
     transform: translateX(5px);
 }
+
+/* Product Card Utilities */
+.product-card-header {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    background: white;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.product-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.product-card-title {
+    min-height: 2.5rem;
+}

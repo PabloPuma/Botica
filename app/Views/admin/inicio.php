@@ -117,9 +117,9 @@ $ingresos_hoy = $db->query("SELECT COALESCE(SUM(total), 0) as total FROM ventas 
                             </a>
                         </div>
                         <div class="col-md-4">
-                            <a href="index.php?route=admin/ventas" class="btn btn-outline-info w-100 p-3 d-flex flex-column align-items-center">
+                            <a href="index.php?route=admin/historial" class="btn btn-outline-info w-100 p-3 d-flex flex-column align-items-center">
                                 <i class="bi bi-file-earmark-bar-graph fs-1 mb-2"></i>
-                                <span class="fw-bold">Reportes de Ventas</span>
+                                <span class="fw-bold">Historial</span>
                             </a>
                         </div>
                     </div>

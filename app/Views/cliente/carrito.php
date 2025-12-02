@@ -42,7 +42,7 @@ $total = 0;
 ?>
 
 <div class="container mt-4">
-    <h2><i class="bi bi-cart-fill me-2"></i>Mi Carrito de Compras</h2>
+    <h2><i class="bi me-2"></i>Mi Carrito de Compras</h2>
     
     <?php if ($success): ?><div class="alert alert-success"><?php echo $success; ?></div><?php endif; ?>
     <?php if ($error): ?><div class="alert alert-danger"><?php echo $error; ?></div><?php endif; ?>

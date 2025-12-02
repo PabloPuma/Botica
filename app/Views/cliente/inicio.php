@@ -8,7 +8,9 @@ use App\Controllers\SaleController;
 
 $productController = new ProductController();
 $saleController = new SaleController();
+$productos = $productController->index();
 $id_usuario = $_SESSION['usuario_id'];
+$nombre_usuario = $_SESSION['nombre'] ?? 'Cliente';
 $msg = '';
 
 // Handle Add to Cart
@@ -21,11 +23,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_cart'])) {
         $msg = "Error al agregar al carrito";
     }
 }
-                    </span>
-                    <span class="badge bg-white text-primary px-4 py-2">
-                        <i class="bi bi-cash-coin"></i> Mejores Precios
-                    </span>
-                </div>
+?>
+
+<div class="container-fluid px-4 py-4">
+    <!-- Welcome Section -->
+    <div class="pharmacy-card mb-4 p-4 text-white text-center" style="background: var(--gradient-primary); border-radius: var(--radius-lg);">
+        <div class="d-flex flex-column align-items-center justify-content-center">
+            <div class="rounded-circle bg-white bg-opacity-25 p-3 mb-3">
+                <i class="bi bi-person-circle fs-1"></i>
+            </div>
+            <div>
+                <h1 class="display-5 fw-bold mb-2">Bienvenido a Botica JhireFarma</h1>
+                <p class="lead mb-0 fs-5 opacity-90">
+                    Cuidamos de ti y tu familia con los mejores productos.
+                </p>
             </div>
         </div>
     </div>
@@ -50,21 +61,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_cart'])) {
     <!-- Products Grid -->
     <div class="row g-4" id="productList">
         <?php while($prod = $productos->fetch_assoc()): ?>
-        <div class="col-lg-3 col-md-4 col-sm-6 product-card fade-in" data-name="<?php echo strtolower(htmlspecialchars($prod['nombre'])); ?>" data-category="<?php echo strtolower(htmlspecialchars($prod['categoria'])); ?>">
+        <div class="col-lg-3 col-md-4 col-sm-6 fade-in" data-name="<?php echo strtolower(htmlspecialchars($prod['nombre'])); ?>" data-category="<?php echo strtolower(htmlspecialchars($prod['categoria'])); ?>">
             <div class="product-card h-100">
-                <div style="position: relative; overflow: hidden; border-radius: var(--radius-lg) var(--radius-lg) 0 0; background: white;">
-                    <?php if ($prod['oferta'] === 'Si'): ?>
-                    <span class="badge bg-danger position-absolute top-0 end-0 m-3">
-                        <i class="bi bi-lightning-fill"></i> OFERTA
-                    </span>
-                    <?php endif; ?>
-                    <img src="assets/<?php echo htmlspecialchars($prod['imagen']); ?>" class="card-img-top p-3" alt="<?php echo htmlspecialchars($prod['nombre']); ?>" style="height:220px;object-fit:contain;">
+                <div class="product-card-header">
+                    <img src="assets/<?php echo htmlspecialchars($prod['imagen']); ?>" class="card-img-top product-card-img" alt="<?php echo htmlspecialchars($prod['nombre']); ?>">
                 </div>
                 <div class="card-body d-flex flex-column p-4">
                     <span class="badge badge-pharmacy mb-2 align-self-start">
                         <?php echo htmlspecialchars($prod['categoria']); ?>
                     </span>
-                    <h5 class="card-title mb-2" style="min-height: 2.5rem;">
+                    <h5 class="card-title mb-2 product-card-title">
                         <?php echo htmlspecialchars($prod['nombre']); ?>
                     </h5>
                     <div class="mt-auto">

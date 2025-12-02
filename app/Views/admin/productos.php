@@ -35,7 +35,7 @@ $productos = $productController->index();
 
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2>📦 Gestión de Inventario (Admin)</h2>
+        <h2>Gestión de Inventario (Admin)</h2>
         <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#newProductModal">
             <i class="bi bi-plus-circle"></i> Nuevo Producto
         </button>

@@ -34,7 +34,7 @@ $usuarios = $adminController->getAllUsers();
 
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2>👥 Gestión de Usuarios</h2>
+        <h2>Gestión de Usuarios</h2>
         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newUserModal">
             <i class="bi bi-person-plus"></i> Nuevo Usuario
         </button>

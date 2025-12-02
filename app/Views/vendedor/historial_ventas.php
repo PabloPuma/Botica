@@ -18,7 +18,7 @@ $ventas = $db->query("
 
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>📊 Historial de Ventas</h2>
+        <h2>Historial de Ventas</h2>
         <a href="index.php?route=vendedor/dashboard" class="btn btn-outline-secondary">
             <i class="bi bi-arrow-left"></i> Volver
         </a>

@@ -40,7 +40,7 @@ $total_pages = ceil($total_logs / $limit);
 
 <div class="container-fluid mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2>📋 Logs del Sistema</h2>
+        <h2>Logs del Sistema</h2>
         <div class="text-muted">
             Total de registros: <strong><?php echo $total_logs; ?></strong>
         </div>

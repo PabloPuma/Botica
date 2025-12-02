@@ -21,7 +21,7 @@
     --color-info: #29B6F6;
 
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, #2D5F8D 0%, #4CAF50 100%);
+    --gradient-primary: linear-gradient(135deg, #234b71 0%, #1ad2aa 100%);
     --gradient-light: linear-gradient(135deg, #E3F2FD 0%, #F1F8E9 100%);
     --gradient-dark: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
 

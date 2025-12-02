@@ -23,7 +23,7 @@ $ventas = $salesDAO->getSalesHistory($filters);
 
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>📊 Historial General de Ventas</h2>
+        <h2>Historial General de Ventas</h2>
         <a href="index.php?route=admin/dashboard" class="btn btn-outline-secondary">
             <i class="bi bi-arrow-left"></i> Volver
         </a>
