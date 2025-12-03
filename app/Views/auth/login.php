@@ -40,6 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
         <form class="login-form" method="POST">
+            <?php echo \App\Helpers\Security::csrfField(); ?>
             <?php if (!empty($error)): ?>
                 <div class="alert-login">
                     <i class="bi bi-exclamation-circle me-2"></i>
