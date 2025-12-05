@@ -31,21 +31,26 @@ class SaleController {
     public function checkout($userId, $deliveryMethod = 'tienda') {
         $cart = $this->salesDAO->getCartByUserId($userId);
         $items = [];
-        $total = 0;
+        $subtotal = 0;
 
         while ($row = $cart->fetch_assoc()) {
             $items[] = $row;
-            $total += $row['precio'] * $row['cantidad'];
+            $subtotal += $row['precio'] * $row['cantidad'];
         }
 
         if (empty($items)) {
             return "El carrito está vacío.";
         }
 
-        $saleId = $this->salesDAO->createSale($userId, $total, $items, $deliveryMethod);
+        // El cálculo del total (con delivery) se hace en SalesDAO::createSale()
+        $saleId = $this->salesDAO->createSale($userId, $subtotal, $items, $deliveryMethod);
+        
         if ($saleId) {
-            // Log successful sale
-            Logger::getInstance()->logSale($userId, $saleId, $total);
+            // Calcular total final para el log
+            $costoDelivery = ($deliveryMethod === 'delivery') ? 8.00 : 0.00;
+            $totalFinal = $subtotal + $costoDelivery;
+            
+            Logger::getInstance()->logSale($userId, $saleId, $totalFinal);
             return $saleId;
         }
         return "Error al procesar la venta.";

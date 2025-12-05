@@ -10,7 +10,7 @@ class SalesDAO {
         $this->db = Database::getInstance()->getConnection();
     }
 
-    // Cart Operations
+    // Operaciones del Carrito
     public function getCartByUserId($userId) {
         $stmt = $this->db->prepare("
             SELECT c.id_producto, c.cantidad, p.nombre, p.precio, p.imagen 
@@ -24,7 +24,7 @@ class SalesDAO {
     }
 
     public function addToCart($userId, $productId, $quantity) {
-        // Check if exists
+        // Verificar si existe
         $stmt = $this->db->prepare("SELECT cantidad FROM carrito WHERE id_usuario = ? AND id_producto = ?");
         $stmt->bind_param("ii", $userId, $productId);
         $stmt->execute();
@@ -62,18 +62,22 @@ class SalesDAO {
         return $stmt->execute();
     }
 
-    // Checkout Operations
-    public function createSale($userId, $total, $items, $deliveryMethod = 'tienda') {
+    // Operaciones de Checkout
+    public function createSale($userId, $subtotal, $items, $deliveryMethod = 'tienda') {
         $this->db->begin_transaction();
 
         try {
-            // 1. Create Sale Record
-            $stmt = $this->db->prepare("INSERT INTO ventas (id_usuario, total, fecha, metodo_entrega) VALUES (?, ?, NOW(), ?)");
-            $stmt->bind_param("ids", $userId, $total, $deliveryMethod);
+            // Calcular costo de delivery
+            $costoDelivery = ($deliveryMethod === 'delivery') ? 8.00 : 0.00;
+            $total = $subtotal + $costoDelivery;
+
+            // 1. Crear registro de venta
+            $stmt = $this->db->prepare("INSERT INTO ventas (id_usuario, total, metodo_entrega, costo_delivery, fecha) VALUES (?, ?, ?, ?, NOW())");
+            $stmt->bind_param("idsd", $userId, $total, $deliveryMethod, $costoDelivery);
             $stmt->execute();
             $saleId = $this->db->insert_id;
 
-            // 2. Add Sale Details and Update Stock
+            // 2. Agregar detalles de venta y actualizar stock
             $stmtDetail = $this->db->prepare("INSERT INTO detalle_ventas (id_venta, id_producto, cantidad, precio_unitario) VALUES (?, ?, ?, ?)");
             $stmtStock = $this->db->prepare("UPDATE productos SET cantidad = cantidad - ? WHERE id = ?");
 
@@ -85,7 +89,7 @@ class SalesDAO {
                 $stmtStock->execute();
             }
 
-            // 3. Clear Cart
+            // 3. Limpiar carrito
             $this->clearCart($userId);
 
             $this->db->commit();
@@ -95,7 +99,7 @@ class SalesDAO {
             return false;
         }
     }
-    // History & Export Operations
+    // Operaciones de Historial y Exportación
     public function getSalesHistory($filters = []) {
         $sql = "SELECT v.id, v.fecha, v.total, u.nombre as usuario_nombre, u.rol, u.usuario 
                 FROM ventas v 
@@ -105,7 +109,7 @@ class SalesDAO {
         $types = "";
         $params = [];
 
-        // Filter by Date Range
+        // Filtrar por rango de fechas
         if (!empty($filters['start_date'])) {
             $sql .= " AND DATE(v.fecha) >= ?";
             $types .= "s";
@@ -117,14 +121,14 @@ class SalesDAO {
             $params[] = $filters['end_date'];
         }
 
-        // Filter by Specific User ID (for Client/Vendor self-view or Admin filtering)
+        // Filtrar por ID de usuario específico (para vista de Cliente/Vendedor o filtro de Admin)
         if (!empty($filters['user_id'])) {
             $sql .= " AND v.id_usuario = ?";
             $types .= "i";
             $params[] = $filters['user_id'];
         }
 
-        // Filter by Role (Admin view)
+        // Filtrar por Rol (vista de Admin)
         if (!empty($filters['role'])) {
             $sql .= " AND u.rol = ?";
             $types .= "s";

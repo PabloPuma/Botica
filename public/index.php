@@ -16,17 +16,10 @@ $route = $_GET['route'] ?? 'login';
 require_once __DIR__ . '/../app/Helpers/Security.php';
 use App\Helpers\Security;
 
-// Start session if not started (already started at line 2)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $token = $_POST['csrf_token'] ?? '';
     if (!Security::verifyCsrfToken($token)) {
-        // Allow login without CSRF for now if it's the first implementation to avoid breaking, 
-        // OR enforce it. Let's enforce it but log it.
-        // For this demo, we will just log a warning and maybe stop, 
-        // but since we haven't updated forms yet, this WOULD break the app.
-        // So let's just Log it for now as a "Dry Run".
         error_log("CSRF Token Missing or Invalid for route: $route");
-        // die("Error de seguridad: Token CSRF inválido."); // Uncomment to enforce
     }
 }
 

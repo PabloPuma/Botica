@@ -97,9 +97,22 @@ $total = 0;
                 </tbody>
                 <?php if ($total > 0): ?>
                 <tfoot>
+                    <!-- Subtotal -->
                     <tr>
-                        <td colspan="3" class="text-end fw-bold fs-5">Total a Pagar:</td>
-                        <td class="fw-bold fs-5 text-success">S/ <?php echo number_format($total, 2); ?></td>
+                        <td colspan="3" class="text-end fw-bold">Subtotal:</td>
+                        <td class="fw-bold">S/ <?php echo number_format($total, 2); ?></td>
+                        <td></td>
+                    </tr>
+                    <!-- Costo Delivery (Oculto por defecto) -->
+                    <tr id="costoDeliveryRow" style="display: none;">
+                        <td colspan="3" class="text-end fw-bold text-muted">Costo de Delivery:</td>
+                        <td class="fw-bold text-muted">S/ 8.00</td>
+                        <td></td>
+                    </tr>
+                    <!-- Total Final -->
+                    <tr>
+                        <td colspan="3" class="text-end fw-bold fs-5">Total a Pagar: </td>
+                        <td class="fw-bold fs-5 text-success" id="totalFinal">S/ <?php echo number_format($total, 2); ?></td>
                         <td></td>
                     </tr>
                 </tfoot>
@@ -119,15 +132,15 @@ $total = 0;
                     <form method="POST">
                         <div class="mb-3">
                             <div class="form-check mb-2">
-                                <input class="form-check-input" type="radio" name="delivery_method" id="deliveryTienda" value="tienda" checked>
+                                <input class="form-check-input" type="radio" name="delivery_method" id="deliveryTienda" value="tienda" checked onchange="calcularTotal()">
                                 <label class="form-check-label" for="deliveryTienda">
                                     <i class="bi bi-shop"></i> Recoger en Tienda (Gratis)
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="delivery_method" id="deliveryHome" value="delivery">
+                                <input class="form-check-input" type="radio" name="delivery_method" id="deliveryHome" value="delivery" onchange="calcularTotal()">
                                 <label class="form-check-label" for="deliveryHome">
-                                    <i class="bi bi-bicycle"></i> Delivery a Domicilio
+                                    <i class="bi bi-bicycle"></i> Delivery a Domicilio (S/ 8.00)
                                 </label>
                             </div>
                         </div>
@@ -141,6 +154,29 @@ $total = 0;
             </div>
         </div>
     </div>
+    
+    <script>
+    function calcularTotal() {
+        // 1. Obtener valores
+        var subtotal = <?php echo (float)$total; ?>;
+        var esDelivery = document.getElementById('deliveryHome').checked;
+        
+        // 2. Calcular
+        var costoDelivery = esDelivery ? 8.00 : 0.00;
+        var total = subtotal + costoDelivery;
+        
+        // 3. Actualizar UI
+        document.getElementById('totalFinal').innerText = 'S/ ' + total.toFixed(2);
+        
+        // Mostrar/Ocultar fila de delivery
+        var filaDelivery = document.getElementById('costoDeliveryRow');
+        if (esDelivery) {
+            filaDelivery.style.display = 'table-row';
+        } else {
+            filaDelivery.style.display = 'none';
+        }
+    }
+    </script>
     <?php endif; ?>
 </div>
 

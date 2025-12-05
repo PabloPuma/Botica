@@ -20,13 +20,13 @@ class ProductController {
         $precio = $data['precio'];
         $cantidad = $data['cantidad'];
         
-        // Validation
+        // Validación
         if (empty($nombre) || $precio <= 0 || $cantidad < 0) {
             return "Datos inválidos.";
         }
 
         if ($this->productDAO->create($nombre, $categoria, $precio, $cantidad)) {
-            // Log history if needed
+            // Registrar historial si es necesario
             return true;
         }
         return "Error al crear producto.";

@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `bodega_esquinita`
+-- Base de datos: `botica`
 --
 
 -- --------------------------------------------------------
@@ -178,7 +178,9 @@ CREATE TABLE `ventas` (
   `id` int(11) NOT NULL,
   `id_usuario` int(11) NOT NULL,
   `fecha` datetime DEFAULT current_timestamp(),
-  `total` decimal(10,2) NOT NULL
+  `total` decimal(10,2) NOT NULL,
+  `metodo_entrega` enum('tienda','delivery') DEFAULT 'tienda',
+  `costo_delivery` decimal(10,2) DEFAULT 0.00
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --

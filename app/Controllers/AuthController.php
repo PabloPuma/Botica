@@ -22,13 +22,13 @@ class AuthController {
             $_SESSION['nombre'] = $user['nombre'];
             $_SESSION['rol'] = $user['rol'];
             
-            // Log successful login
+            // Registrar inicio de sesión exitoso
             Logger::getInstance()->logLogin($user['id'], $username, true);
             
             return true;
         }
         
-        // Log failed login attempt
+        // Registrar intento de inicio de sesión fallido
         Logger::getInstance()->logLogin(null, $username, false);
         
         return false;
@@ -39,12 +39,12 @@ class AuthController {
             session_start();
         }
         
-        // Log logout before clearing session
+        // Registrar cierre de sesión antes de limpiar la sesión
         if (isset($_SESSION['usuario_id']) && isset($_SESSION['nombre'])) {
             Logger::getInstance()->logLogout($_SESSION['usuario_id'], $_SESSION['nombre']);
         }
         
-        // Clear cart for admin and vendedor roles before destroying session
+        // Limpiar carrito para roles admin y vendedor antes de destruir sesión
         if (isset($_SESSION['rol']) && isset($_SESSION['usuario_id'])) {
             if ($_SESSION['rol'] === 'admin' || $_SESSION['rol'] === 'vendedor') {
                 require_once __DIR__ . '/../Models/SalesDAO.php';
@@ -59,16 +59,16 @@ class AuthController {
     }
 
     public function register($nombre, $usuario, $clave, $rol = 'cliente') {
-        // Basic validation
+        // Validación básica
         if (empty($nombre) || empty($usuario) || empty($clave)) {
             return "Todos los campos son obligatorios.";
         }
         
-        // Check if user exists (should add method to DAO for this, but for now relying on DB constraint or simple check)
-        // Ideally: if ($this->userDAO->findByUsername($usuario)) return "Usuario ya existe";
+        // Verificar si el usuario existe (se debería agregar método al DAO, por ahora confiamos en restricción de BD)
+        // Idealmente: if ($this->userDAO->findByUsername($usuario)) return "Usuario ya existe";
 
         if ($this->userDAO->create($nombre, $usuario, $clave, $rol)) {
-            // Log successful registration
+            // Registrar registro exitoso
             Logger::getInstance()->logRegistro($usuario, $rol);
             return true;
         }

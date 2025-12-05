@@ -14,17 +14,24 @@ $success = '';
 $error = '';
 $msg = '';
 
-// Handle Checkout
+// Manejar Checkout
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['checkout'])) {
-    $res = $saleController->checkout($id_usuario);
-    if (is_numeric($res)) {
-        $success = "Venta registrada con éxito! ID Venta: " . $res;
+    $metodoEntrega = isset($_POST['metodo_entrega']) ? $_POST['metodo_entrega'] : 'tienda';
+    
+    // Validar método de entrega
+    if (!in_array($metodoEntrega, ['tienda', 'delivery'])) {
+        $error = "Método de entrega inválido.";
     } else {
-        $error = $res;
+        $res = $saleController->checkout($id_usuario, $metodoEntrega);
+        if (is_numeric($res)) {
+            $success = "Venta registrada con éxito! ID Venta: " . $res;
+        } else {
+            $error = $res;
+        }
     }
 }
 
-// Handle Remove Item
+// Manejar eliminación de ítem
 if (isset($_GET['remove'])) {
     $id_prod = $_GET['remove'];
     $saleController->removeFromCart($id_usuario, $id_prod);
@@ -32,7 +39,7 @@ if (isset($_GET['remove'])) {
     exit();
 }
 
-// Handle Update Quantity
+// Manejar actualización de cantidad
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_quantity'])) {
     $id_producto = $_POST['id_producto'];
     $nueva_cantidad = (int)$_POST['nueva_cantidad'];
@@ -41,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_quantity'])) {
     exit();
 }
 
-// Handle Add to Cart
+// Manejar agregar al carrito
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_cart'])) {
     $id_producto = $_POST['id_producto'];
     $cantidad = (int)$_POST['cantidad'];
@@ -112,9 +119,78 @@ $total = 0;
             </table>
             
             <?php if ($total > 0): ?>
-            <form method="POST">
+            <!-- Método de Entrega -->
+            <form method="POST" id="checkoutForm">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Método de Entrega</h5>
+                        
+                        <!-- Opción Tienda -->
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="metodo_entrega" id="tienda" value="tienda" checked onchange="calcularTotal()">
+                            <label class="form-check-label" for="tienda">
+                                <strong>Recojo en Tienda</strong> - Gratis
+                            </label>
+                        </div>
+                        
+                        <!-- Opción Delivery -->
+                        <div class="form-check mt-2">
+                            <input class="form-check-input" type="radio" name="metodo_entrega" id="delivery" value="delivery" onchange="calcularTotal()">
+                            <label class="form-check-label" for="delivery">
+                                <strong>Delivery</strong> - S/ 8.00
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resumen de Costos -->
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <span>Subtotal:</span>
+                            <span>S/ <?php echo number_format($total, 2); ?></span>
+                        </div>
+                        
+                        <!-- Fila oculta por defecto -->
+                        <div class="d-flex justify-content-between" id="costoDeliveryRow" style="display:none;">
+                            <span>Costo de Delivery:</span>
+                            <span>S/ 8.00</span>
+                        </div>
+                        
+                        <hr>
+                        
+                        <div class="d-flex justify-content-between">
+                            <strong>Total a Pagar:</strong>
+                            <strong id="totalFinal">S/ <?php echo number_format($total, 2); ?></strong>
+                        </div>
+                    </div>
+                </div>
+
                 <button type="submit" name="checkout" class="btn btn-success w-100 btn-lg">Registrar Venta</button>
             </form>
+
+            <script>
+            function calcularTotal() {
+                // 1. Obtener valores
+                var subtotal = <?php echo (float)$total; ?>;
+                var esDelivery = document.getElementById('delivery').checked;
+                
+                // 2. Calcular
+                var costoDelivery = esDelivery ? 8.00 : 0.00;
+                var total = subtotal + costoDelivery;
+                
+                // 3. Actualizar UI
+                document.getElementById('totalFinal').innerText = 'S/ ' + total.toFixed(2);
+                
+                // Mostrar/Ocultar fila de delivery
+                var filaDelivery = document.getElementById('costoDeliveryRow');
+                if (esDelivery) {
+                    filaDelivery.style.display = 'flex';
+                } else {
+                    filaDelivery.style.display = 'none';
+                }
+            }
+            </script>
             <?php endif; ?>
         </div>
         
@@ -157,7 +233,7 @@ $total = 0;
 </div>
 
 <script>
-// AJAX for add to cart - prevents page reload and scroll
+// AJAX para agregar al carrito - previene recarga de página y desplazamiento
 document.querySelectorAll('.add-to-cart-form').forEach(form => {
     form.addEventListener('submit', function(e) {
         e.preventDefault();

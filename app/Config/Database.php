@@ -8,7 +8,7 @@ class Database {
     private $host = 'localhost';
     private $user = 'root';
     private $pass = '';
-    private $name = 'bodega_esquinita';
+    private $name = 'botica';
 
     private function __construct() {
         $this->connection = new \mysqli($this->host, $this->user, $this->pass, $this->name);

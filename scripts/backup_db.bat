@@ -4,7 +4,7 @@ set TIMESTAMP=%TIMESTAMP: =0%
 set BACKUP_DIR=c:\xampp\htdocs\dashboard\Botica\backups
 set DB_USER=root
 set DB_PASS=
-set DB_NAME=bodega_esquinita
+set DB_NAME=botica
 
 if not exist %BACKUP_DIR% mkdir %BACKUP_DIR%
 
