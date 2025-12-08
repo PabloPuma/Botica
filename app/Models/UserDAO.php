@@ -11,7 +11,7 @@ class UserDAO {
     }
 
     public function findByUsername($username) {
-        $stmt = $this->db->prepare("SELECT id, nombre, clave, rol FROM usuarios WHERE usuario = ?");
+        $stmt = $this->db->prepare("SELECT id, nombre, clave, rol, activo FROM usuarios WHERE usuario = ?");
         $stmt->bind_param("s", $username);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -78,6 +78,32 @@ class UserDAO {
         // Actualizar username
         $stmt = $this->db->prepare("UPDATE usuarios SET usuario = ? WHERE id = ?");
         $stmt->bind_param("si", $newUsername, $userId);
+        return $stmt->execute();
+    }
+
+    public function hasSales($userId) {
+        $stmt = $this->db->prepare("SELECT COUNT(*) as total FROM ventas WHERE id_usuario = ?");
+        $stmt->bind_param("i", $userId);
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_assoc();
+        return $result['total'] > 0;
+    }
+
+    public function deactivateUser($userId) {
+        $stmt = $this->db->prepare("UPDATE usuarios SET activo = 0 WHERE id = ?");
+        $stmt->bind_param("i", $userId);
+        return $stmt->execute();
+    }
+
+    public function activateUser($userId) {
+        $stmt = $this->db->prepare("UPDATE usuarios SET activo = 1 WHERE id = ?");
+        $stmt->bind_param("i", $userId);
+        return $stmt->execute();
+    }
+
+    public function updateUserData($userId, $nombre, $correo, $telefono, $rol) {
+        $stmt = $this->db->prepare("UPDATE usuarios SET nombre = ?, correo = ?, telefono = ?, rol = ? WHERE id = ?");
+        $stmt->bind_param("ssssi", $nombre, $correo, $telefono, $rol, $userId);
         return $stmt->execute();
     }
 }

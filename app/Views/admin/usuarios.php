@@ -29,6 +29,36 @@ if (isset($_GET['delete'])) {
     }
 }
 
+// Handle Edit User
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_user'])) {
+    $res = $adminController->editUser($_POST['edit_user_id'], $_POST);
+    if ($res === true) {
+        $msg = "Usuario actualizado exitosamente.";
+    } else {
+        $error = $res;
+    }
+}
+
+// Handle Activate User
+if (isset($_GET['activate'])) {
+    $res = $adminController->activateUser($_GET['activate']);
+    if ($res === true) {
+        $msg = "Usuario activado.";
+    } else {
+        $error = $res;
+    }
+}
+
+// Handle Deactivate User
+if (isset($_GET['deactivate'])) {
+    $res = $adminController->deactivateUser($_GET['deactivate']);
+    if ($res === true) {
+        $msg = "Usuario desactivado.";
+    } else {
+        $error = $res;
+    }
+}
+
 $usuarios = $adminController->getAllUsers();
 ?>
 
@@ -53,11 +83,16 @@ $usuarios = $adminController->getAllUsers();
                         <th>DNI</th>
                         <th>Usuario</th>
                         <th>Rol</th>
+                        <th>Estado</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php while($u = $usuarios->fetch_assoc()): ?>
+                    <?php 
+                    $userDAO = new \App\Models\UserDAO();
+                    while($u = $usuarios->fetch_assoc()): 
+                        $hasSales = $userDAO->hasSales($u['id']);
+                    ?>
                     <tr>
                         <td><?php echo $u['id']; ?></td>
                         <td><?php echo htmlspecialchars($u['nombre']); ?></td>
@@ -72,15 +107,90 @@ $usuarios = $adminController->getAllUsers();
                             </span>
                         </td>
                         <td>
-                            <?php if ($u['id'] != $_SESSION['usuario_id']): ?>
-                            <a href="index.php?route=admin/usuarios&delete=<?php echo $u['id']; ?>" class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Estás seguro de eliminar este usuario?');">
-                                <i class="bi bi-trash"></i> Eliminar
-                            </a>
+                            <?php if (isset($u['activo']) && $u['activo'] == 1): ?>
+                                <span class="badge bg-success">Activo</span>
                             <?php else: ?>
-                            <span class="text-muted small">Tu cuenta</span>
+                                <span class="badge bg-danger">Inactivo</span>
+                            <?php endif; ?>
+                        </td>
+                        <td>
+                            <?php if ($u['id'] != $_SESSION['usuario_id']): ?>
+                                <!-- Botón Editar -->
+                                <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editUserModal<?php echo $u['id']; ?>" title="Editar">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                
+                                <!-- Botón Activar/Desactivar -->
+                                <?php if (isset($u['activo']) && $u['activo'] == 1): ?>
+                                    <a href="index.php?route=admin/usuarios&deactivate=<?php echo $u['id']; ?>" 
+                                       class="btn btn-sm btn-outline-warning"
+                                       onclick="return confirm('¿Desactivar este usuario?');" title="Desactivar">
+                                        <i class="bi bi-lock"></i>
+                                    </a>
+                                <?php else: ?>
+                                    <a href="index.php?route=admin/usuarios&activate=<?php echo $u['id']; ?>" 
+                                       class="btn btn-sm btn-outline-success"
+                                       onclick="return confirm('¿Activar este usuario?');" title="Activar">
+                                        <i class="bi bi-unlock"></i>
+                                    </a>
+                                <?php endif; ?>
+                                
+                                <!-- Botón Eliminar (solo si NO tiene ventas) -->
+                                <?php if (!$hasSales): ?>
+                                    <a href="index.php?route=admin/usuarios&delete=<?php echo $u['id']; ?>" 
+                                       class="btn btn-sm btn-outline-danger"
+                                       onclick="return confirm('¿Eliminar permanentemente?');" title="Eliminar">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                <?php else: ?>
+                                    <span class="text-muted small" title="No se puede eliminar: tiene ventas">🔒</span>
+                                <?php endif; ?>
+                            <?php else: ?>
+                                <span class="text-muted small">Tu cuenta</span>
                             <?php endif; ?>
                         </td>
                     </tr>
+                    
+                    <!-- Modal Editar Usuario -->
+                    <div class="modal fade" id="editUserModal<?php echo $u['id']; ?>" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form method="POST">
+                                    <input type="hidden" name="edit_user_id" value="<?php echo $u['id']; ?>">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Editar Usuario</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label>Nombre Completo</label>
+                                            <input type="text" name="nombre" class="form-control" value="<?php echo htmlspecialchars($u['nombre']); ?>" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label>Correo</label>
+                                            <input type="email" name="correo" class="form-control" value="<?php echo htmlspecialchars($u['correo'] ?? ''); ?>">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label>Teléfono</label>
+                                            <input type="tel" name="telefono" class="form-control" value="<?php echo htmlspecialchars($u['telefono'] ?? ''); ?>">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label>Rol</label>
+                                            <select name="rol" class="form-select" required>
+                                                <option value="cliente" <?php echo $u['rol'] === 'cliente' ? 'selected' : ''; ?>>Cliente</option>
+                                                <option value="vendedor" <?php echo $u['rol'] === 'vendedor' ? 'selected' : ''; ?>>Vendedor</option>
+                                                <option value="admin" <?php echo $u['rol'] === 'admin' ? 'selected' : ''; ?>>Administrador</option>
+                                            </select>
+                                        </div>
+                                        <small class="text-muted">No se puede cambiar: DNI, Usuario</small>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" name="edit_user" class="btn btn-primary">Guardar Cambios</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                     <?php endwhile; ?>
                 </tbody>
             </table>

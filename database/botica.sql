@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 08-12-2025 a las 14:15:45
+-- Tiempo de generación: 08-12-2025 a las 14:46:31
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.0.28
 
@@ -140,7 +140,13 @@ INSERT INTO `detalle_ventas` (`id`, `id_venta`, `id_producto`, `cantidad`, `prec
 (83, 65, 6, 1, 3.00),
 (84, 65, 14, 1, 4.00),
 (85, 66, 18, 1, 9.00),
-(86, 67, 1, 1, 3.50);
+(86, 67, 1, 1, 3.50),
+(87, 68, 5, 1, 4.50),
+(88, 68, 12, 2, 8.50),
+(89, 68, 16, 1, 5.50),
+(90, 69, 2, 1, 5.00),
+(91, 69, 13, 1, 15.00),
+(92, 70, 13, 1, 15.00);
 
 -- --------------------------------------------------------
 
@@ -171,7 +177,9 @@ INSERT INTO `historial_stock` (`id`, `id_producto`, `tipo_movimiento`, `cantidad
 (27, 20, 'entrada', 2, '2025-12-07 18:55:48'),
 (28, 39, 'entrada', 1, '2025-12-07 18:56:03'),
 (29, 39, 'entrada', 1, '2025-12-07 18:59:58'),
-(30, 3, 'entrada', 1, '2025-12-07 19:00:14');
+(30, 3, 'entrada', 1, '2025-12-07 19:00:14'),
+(31, 20, 'entrada', 2, '2025-12-08 08:28:32'),
+(32, 19, 'entrada', 1, '2025-12-08 08:32:45');
 
 -- --------------------------------------------------------
 
@@ -600,7 +608,36 @@ INSERT INTO `logs` (`id`, `id_usuario`, `tipo_evento`, `descripcion`, `ip_addres
 (403, 17, 'venta', 'Venta registrada - ID: 67, Total: S/ 11.5', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0', '2025-12-08 08:13:59', 'info'),
 (404, 17, 'logout', 'Logout de usuario: CARLO PILARES', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0', '2025-12-08 08:14:06', 'info'),
 (405, 12, 'login', 'Login exitoso para usuario: GA', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0', '2025-12-08 08:14:10', 'info'),
-(406, 12, 'logout', 'Logout de usuario: GA', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0', '2025-12-08 08:14:27', 'info');
+(406, 12, 'logout', 'Logout de usuario: GA', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0', '2025-12-08 08:14:27', 'info'),
+(407, 12, 'login', 'Login exitoso para usuario: GA', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0', '2025-12-08 08:24:56', 'info'),
+(408, 12, 'logout', 'Logout de usuario: GA', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0', '2025-12-08 08:25:54', 'info'),
+(409, 16, 'login', 'Login exitoso para usuario: POOL', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0', '2025-12-08 08:26:01', 'info'),
+(410, 16, 'venta', 'Venta registrada - ID: 68, Total: S/ 35', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0', '2025-12-08 08:27:22', 'info'),
+(411, 16, 'usuario', 'Administración de usuarios - Actualizar perfil: Perfil actualizado', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0', '2025-12-08 08:28:00', 'info'),
+(412, 16, 'usuario', 'Administración de usuarios - Cambiar contraseña: Contraseña actualizada', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0', '2025-12-08 08:28:08', 'info'),
+(413, 16, 'logout', 'Logout de usuario: NATANIEL PABLO PUMA QUICAÑO', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0', '2025-12-08 08:28:11', 'info'),
+(414, NULL, 'login', 'Intento de login fallido para usuario: PEPE', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0', '2025-12-08 08:28:15', 'warning'),
+(415, 9, 'login', 'Login exitoso para usuario: PEPE', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0', '2025-12-08 08:28:22', 'info'),
+(416, 9, 'logout', 'Logout de usuario: PEPE', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0', '2025-12-08 08:30:57', 'info'),
+(417, 12, 'login', 'Login exitoso para usuario: GA', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0', '2025-12-08 08:31:00', 'info'),
+(418, 12, 'usuario', 'Administración de usuarios - Crear usuario: ANO - Rol: vendedor', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0', '2025-12-08 08:32:28', 'info'),
+(419, 12, 'usuario', 'Administración de usuarios - Eliminar usuario: ANO', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0', '2025-12-08 08:32:37', 'info'),
+(420, 12, 'venta', 'Venta registrada - ID: 69, Total: S/ 20', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0', '2025-12-08 08:33:10', 'info'),
+(421, 12, 'logout', 'Logout de usuario: GA', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0', '2025-12-08 08:34:12', 'info'),
+(422, 12, 'login', 'Login exitoso para usuario: GA', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0', '2025-12-08 08:34:29', 'info'),
+(423, 12, 'usuario', 'Administración de usuarios - Desactivar usuario: ID: 17', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0', '2025-12-08 08:42:59', 'info'),
+(424, 12, 'logout', 'Logout de usuario: GA', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0', '2025-12-08 08:43:24', 'info'),
+(425, 12, 'login', 'Login exitoso para usuario: GA', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0', '2025-12-08 08:43:36', 'info'),
+(426, 12, 'usuario', 'Administración de usuarios - Desactivar usuario: ID: 16', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0', '2025-12-08 08:43:45', 'info'),
+(427, 12, 'logout', 'Logout de usuario: GA', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0', '2025-12-08 08:43:49', 'info'),
+(428, NULL, 'login', 'Intento de login fallido para usuario: POOL', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0', '2025-12-08 08:43:56', 'warning'),
+(429, NULL, 'login', 'Intento de login fallido para usuario: POOL', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0', '2025-12-08 08:44:02', 'warning'),
+(430, 12, 'login', 'Login exitoso para usuario: GA', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0', '2025-12-08 08:44:38', 'info'),
+(431, 12, 'venta', 'Venta registrada - ID: 70, Total: S/ 15', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0', '2025-12-08 08:45:25', 'info'),
+(432, 12, 'usuario', 'Administración de usuarios - Activar usuario: ID: 16', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0', '2025-12-08 08:45:36', 'info'),
+(433, 12, 'logout', 'Logout de usuario: GA', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0', '2025-12-08 08:45:38', 'info'),
+(434, 16, 'login', 'Login exitoso para usuario: POOL', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0', '2025-12-08 08:45:42', 'info'),
+(435, 16, 'logout', 'Logout de usuario: NATANIEL PABLO PUMA QUICAÑO', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0', '2025-12-08 08:45:55', 'info');
 
 -- --------------------------------------------------------
 
@@ -625,25 +662,25 @@ CREATE TABLE `productos` (
 
 INSERT INTO `productos` (`id`, `nombre`, `descripcion`, `precio`, `imagen`, `categoria`, `oferta`, `cantidad`) VALUES
 (1, 'Paracetamol 500mg', 'Analgésico y antipirético para dolor y fiebre.', 3.50, 'images/paracetamol.jpg', 'Analgésicos', 'No', 22),
-(2, 'Ibuprofeno 400mg', 'Antiinflamatorio para dolor muscular y fiebre.', 5.00, 'images/ibuprofeno.jpg', 'Antiinflamatorios', 'Si', 16),
+(2, 'Ibuprofeno 400mg', 'Antiinflamatorio para dolor muscular y fiebre.', 5.00, 'images/ibuprofeno.jpg', 'Antiinflamatorios', 'Si', 15),
 (3, 'Omeprazol 20mg', 'Protector gástrico para acidez estomacal.', 6.50, 'images/omeprazol.jpg', 'Gastrointestinal', 'No', 21),
 (4, 'Amoxicilina 500mg', 'Antibiótico para infecciones comunes.', 12.00, 'images/amoxicilina.jpg', 'Antibióticos', 'No', 12),
-(5, 'Loratadina 10mg', 'Antialérgico para rinitis y picazón.', 4.50, 'images/loratadina.jpg', 'Antialérgicos', 'Si', 47),
+(5, 'Loratadina 10mg', 'Antialérgico para rinitis y picazón.', 4.50, 'images/loratadina.jpg', 'Antialérgicos', 'Si', 46),
 (6, 'Suero Oral 500ml', 'Solución hidratante para deshidratación.', 3.00, 'images/suero.jpg', 'Hidratantes', 'No', 56),
 (7, 'Alcohol 70% 120ml', 'Desinfectante general.', 2.00, 'images/alcohol.jpg', 'Antisépticos', 'Si', 75),
 (8, 'Agua Oxigenada 120ml', 'Antiséptico para heridas.', 2.50, 'images/agua_oxigenada.jpg', 'Antisépticos', 'No', 70),
 (9, 'Diclofenaco Gel 1%', 'Gel antiinflamatorio tópico.', 7.50, 'images/diclofenaco_gel.jpg', 'Antiinflamatorios', 'No', 34),
 (10, 'Vitamina C 1g', 'Refuerza el sistema inmunológico.', 6.00, 'images/vitamina_c.jpg', 'Vitaminas', 'Si', 55),
 (11, 'Salbutamol Inhalador', 'Broncodilatador para crisis asmáticas.', 22.00, 'images/salbutamol.jpg', 'Respiratorio', 'No', 4),
-(12, 'Acetaminofén Jarabe', 'Antifebril para niños.', 8.50, 'images/acetaminofen.jpg', 'Pediátricos', 'No', 4),
-(13, 'Ketoconazol Shampoo', 'Antifúngico para caspa severa.', 15.00, 'images/ketoconazol.jpg', 'Dermatológicos', 'No', 17),
+(12, 'Acetaminofén Jarabe', 'Antifebril para niños.', 8.50, 'images/acetaminofen.jpg', 'Pediátricos', 'No', 2),
+(13, 'Ketoconazol Shampoo', 'Antifúngico para caspa severa.', 15.00, 'images/ketoconazol.jpg', 'Dermatológicos', 'No', 15),
 (14, 'Gasas Estériles x10', 'Insumos médicos para curaciones.', 4.00, 'images/gasas.jpg', 'Material de curación', 'No', 94),
 (15, 'Termómetro Digital', 'Medidor de temperatura corporal.', 25.00, 'images/termometro.jpg', 'Equipos médicos', 'No', 0),
-(16, 'Vendas Elásticas', 'Para soporte e inmovilización ligera.', 5.50, 'images/vendas.jpg', 'Material de curación', 'Si', 40),
+(16, 'Vendas Elásticas', 'Para soporte e inmovilización ligera.', 5.50, 'images/vendas.jpg', 'Material de curación', 'Si', 39),
 (17, 'Clorfenamina 4mg', 'Antialérgico para resfriados.', 3.00, 'images/clorfenamina.jpg', 'Antialérgicos', 'No', 38),
 (18, 'Pedialyte 500ml', 'Solución avanzada para hidratación.', 9.00, 'images/pedialyte.jpg', 'Hidratantes', 'No', 22),
-(19, 'Azitromicina 500mg', 'Antibiótico de amplio espectro.', 18.00, 'images/azitromicina.jpg', 'Antibióticos', 'No', 0),
-(20, 'Dicloxacilina 500mg', 'Antibiótico para infecciones de piel.', 14.00, 'images/dicloxacilina.jpg', 'Antibióticos', 'No', 1),
+(19, 'Azitromicina 500mg', 'Antibiótico de amplio espectro.', 18.00, 'images/azitromicina.jpg', 'Antibióticos', 'No', 1),
+(20, 'Dicloxacilina 500mg', 'Antibiótico para infecciones de piel.', 14.00, 'images/dicloxacilina.jpg', 'Antibióticos', 'No', 3),
 (39, 'PRUEBA 1', NULL, 50.00, 'images/default.jpg', 'Equipos Médicos', NULL, 3);
 
 -- --------------------------------------------------------
@@ -664,25 +701,27 @@ CREATE TABLE `usuarios` (
   `promociones` varchar(10) DEFAULT NULL,
   `direccion` varchar(150) DEFAULT NULL,
   `telefono` varchar(20) DEFAULT NULL,
-  `rol` enum('cliente','vendedor','admin') DEFAULT 'cliente'
+  `rol` enum('cliente','vendedor','admin') DEFAULT 'cliente',
+  `activo` tinyint(1) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`id`, `nombre`, `dni`, `edad`, `usuario`, `clave`, `correo`, `genero`, `promociones`, `direccion`, `telefono`, `rol`) VALUES
-(6, 'Jesus Saldaña', '76586711', 22, 'Spectra', '$2y$10$4gcHUOkVUeZ.Z2rIQaO63uwnBXp7JUrJ7EGMSaH9SbvMiKvdwr.Ly', 'jesus2sald@gmail.com', 'Masculino', 'no', 'Orquídeas 160', '972466424', 'cliente'),
-(7, 'Alessandra Salas', '71035754', 22, 'Jiyuu', '$2y$10$.XBUiDN38SGTBmTep0XtDerWC10n/Iby3nyqc8gC3QoK3dAobipoW', 'miraiinikii123@gmail.com', 'Femenino', 'no', 'Jr Miguel Grau 476', '953031029', 'cliente'),
-(9, 'PEPE', NULL, NULL, 'PEPE', '$2y$10$En3HZVLxomxc7S5TUYuTW.tkWEnpTBYQld/pOsPbSwqy936u7JXAO', 'PEPE@GMAIL.COM', NULL, NULL, 'CALLE 1', '789456123', 'vendedor'),
-(10, 'PAPA NOEL PUMA', '72144170', NULL, 'PAPA', '$2y$10$.JALiXBKHe.DAJHf5gBgXOKfLoDobfnFHjBJ8bkAXzWXpBhe9UL8y', 'PAPA@GMAIL.COM', NULL, NULL, '123456789', '123456789', 'cliente'),
-(12, 'GA', NULL, NULL, 'GA', '$2y$10$Mn/tSFWYzS4V6P3VwDLdHOcDyOnLoDB.g2GP9uuGRE7sO4Dle7hhe', NULL, NULL, NULL, NULL, NULL, 'admin'),
-(13, 'PABLO PUMA', NULL, NULL, 'PABLO', '$2y$10$uidAPSxWeyOyw9jNwVlgLeKaC1lECfcU3gWmQpR13/KjSgAkNus9G', NULL, NULL, NULL, NULL, NULL, 'cliente'),
-(14, 'ga', '12345678', NULL, '12345678', '$2y$10$7d3d404Xj1EQD5NhjB/8meEK6AqOtgfUWk0eYDzMOUD9CXUEaoRZ.', NULL, NULL, NULL, '-', '-', 'cliente'),
-(15, 'carlos alvarez', '72144173', NULL, '72144173', '$2y$10$MV5Vat.b2kYz6BrOwQfYiuhsNn4pL1jZ6ymR7NbmKB4k4plBzaI1K', NULL, NULL, NULL, 'calles/n', '935453527', 'cliente'),
-(16, 'NATANIEL PABLO PUMA QUICAÑO', '72144171', NULL, 'POOL', '$2y$10$yCEqHSm2TOOHk1wCymU5JOt1OM7fTihKH8jcMlVH6OTpx/fL6lI5q', NULL, NULL, NULL, NULL, NULL, 'cliente'),
-(17, 'CARLO PILARES', '72144172', NULL, 'CHAMO', '$2y$10$v6Q/3wILTOQOyiKmK7888eAahLjkf4Ws6GMb4ZyOpza7oSanXqvCa', '', NULL, NULL, 'CALLE MAJES S/N', '9354593582', 'cliente'),
-(19, 'CARLOS PILARES CHAMO', '87654321', NULL, 'CARLOS', '$2y$10$ZmGlcatuy/r6Ue3wgUf5FO9xprVnmxwHa3ypy1GRzGEHQBpojHzeG', '', NULL, NULL, 'GA', '789456123', 'cliente');
+INSERT INTO `usuarios` (`id`, `nombre`, `dni`, `edad`, `usuario`, `clave`, `correo`, `genero`, `promociones`, `direccion`, `telefono`, `rol`, `activo`) VALUES
+(6, 'Jesus Saldaña', '76586711', 22, 'Spectra', '$2y$10$4gcHUOkVUeZ.Z2rIQaO63uwnBXp7JUrJ7EGMSaH9SbvMiKvdwr.Ly', 'jesus2sald@gmail.com', 'Masculino', 'no', 'Orquídeas 160', '972466424', 'cliente', 1),
+(7, 'Alessandra Salas', '71035754', 22, 'Jiyuu', '$2y$10$.XBUiDN38SGTBmTep0XtDerWC10n/Iby3nyqc8gC3QoK3dAobipoW', 'miraiinikii123@gmail.com', 'Femenino', 'no', 'Jr Miguel Grau 476', '953031029', 'cliente', 1),
+(9, 'PEPE', NULL, NULL, 'PEPE', '$2y$10$En3HZVLxomxc7S5TUYuTW.tkWEnpTBYQld/pOsPbSwqy936u7JXAO', 'PEPE@GMAIL.COM', NULL, NULL, 'CALLE 1', '789456123', 'vendedor', 1),
+(10, 'PAPA NOEL PUMA', '72144170', NULL, 'PAPA', '$2y$10$.JALiXBKHe.DAJHf5gBgXOKfLoDobfnFHjBJ8bkAXzWXpBhe9UL8y', 'PAPA@GMAIL.COM', NULL, NULL, '123456789', '123456789', 'cliente', 1),
+(12, 'GA', NULL, NULL, 'GA', '$2y$10$Mn/tSFWYzS4V6P3VwDLdHOcDyOnLoDB.g2GP9uuGRE7sO4Dle7hhe', NULL, NULL, NULL, NULL, NULL, 'admin', 1),
+(13, 'PABLO PUMA', NULL, NULL, 'PABLO', '$2y$10$uidAPSxWeyOyw9jNwVlgLeKaC1lECfcU3gWmQpR13/KjSgAkNus9G', NULL, NULL, NULL, NULL, NULL, 'cliente', 1),
+(14, 'ga', '12345678', NULL, '12345678', '$2y$10$7d3d404Xj1EQD5NhjB/8meEK6AqOtgfUWk0eYDzMOUD9CXUEaoRZ.', NULL, NULL, NULL, '-', '-', 'cliente', 1),
+(15, 'carlos alvarez', '72144173', NULL, '72144173', '$2y$10$MV5Vat.b2kYz6BrOwQfYiuhsNn4pL1jZ6ymR7NbmKB4k4plBzaI1K', NULL, NULL, NULL, 'calles/n', '935453527', 'cliente', 1),
+(16, 'NATANIEL PABLO PUMA QUICAÑO', '72144171', NULL, 'POOL', '$2y$10$Zz3UfBWIADqoxNyn5RYNKukuclRLZrZFTAjM25Gwy20PUkUOuNN8e', 'A@GMAIL.COM', NULL, NULL, 'CALLE MQ', '935453526', 'cliente', 1),
+(17, 'CARLO PILARES', '72144172', NULL, 'CHAMO', '$2y$10$v6Q/3wILTOQOyiKmK7888eAahLjkf4Ws6GMb4ZyOpza7oSanXqvCa', '', NULL, NULL, 'CALLE MAJES S/N', '9354593582', 'cliente', 0),
+(19, 'CARLOS PILARES CHAMO', '87654321', NULL, 'CARLOS', '$2y$10$ZmGlcatuy/r6Ue3wgUf5FO9xprVnmxwHa3ypy1GRzGEHQBpojHzeG', '', NULL, NULL, 'GA', '789456123', 'cliente', 1),
+(21, 'VALERIA', '78956324', NULL, '78956324', '$2y$10$JU5HOoG76oMxcoXYY8GCHuyUTK5cDsyeM/mSGAnf9WYXa8IYYMmma', NULL, NULL, NULL, 'C', 'C', 'cliente', 1);
 
 -- --------------------------------------------------------
 
@@ -756,7 +795,10 @@ INSERT INTO `ventas` (`id`, `id_usuario`, `id_vendedor`, `fecha`, `total`, `meto
 (64, 16, 12, '2025-12-08 07:39:06', 4.00, 'tienda', 0.00),
 (65, 17, 12, '2025-12-08 07:40:20', 7.00, 'tienda', 0.00),
 (66, 19, 12, '2025-12-08 08:07:42', 9.00, 'tienda', 0.00),
-(67, 17, 17, '2025-12-08 08:13:59', 11.50, 'delivery', 8.00);
+(67, 17, 17, '2025-12-08 08:13:59', 11.50, 'delivery', 8.00),
+(68, 16, 16, '2025-12-08 08:27:22', 35.00, 'delivery', 8.00),
+(69, 21, 12, '2025-12-08 08:33:10', 20.00, 'tienda', 0.00),
+(70, 16, 12, '2025-12-08 08:45:25', 15.00, 'tienda', 0.00);
 
 --
 -- Índices para tablas volcadas
@@ -837,19 +879,19 @@ ALTER TABLE `detalle_venta`
 -- AUTO_INCREMENT de la tabla `detalle_ventas`
 --
 ALTER TABLE `detalle_ventas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
 
 --
 -- AUTO_INCREMENT de la tabla `historial_stock`
 --
 ALTER TABLE `historial_stock`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT de la tabla `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=407;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=436;
 
 --
 -- AUTO_INCREMENT de la tabla `productos`
@@ -861,13 +903,13 @@ ALTER TABLE `productos`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT de la tabla `ventas`
 --
 ALTER TABLE `ventas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- Restricciones para tablas volcadas

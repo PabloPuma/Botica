@@ -75,7 +75,7 @@ $ventas = $db->query("
                 ?>
                 <tr>
                     <td><?php echo $v['id']; ?></td>
-                    <td><?php echo htmlspecialchars($v['usuario_nombre']); ?></td>
+                    <td><?php echo htmlspecialchars($v['cliente_nombre']); ?></td>
                     <td><?php echo $v['fecha']; ?></td>
                     <td>S/ <?php echo number_format($v['total'], 2); ?></td>
                 </tr>

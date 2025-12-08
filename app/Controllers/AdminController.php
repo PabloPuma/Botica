@@ -20,7 +20,7 @@ class AdminController {
     }
 
     public function getAllUsers() {
-        $result = $this->db->query("SELECT id, nombre, dni, usuario, rol FROM usuarios");
+        $result = $this->db->query("SELECT id, nombre, dni, usuario, rol, activo FROM usuarios");
         return $result;
     }
 
@@ -60,6 +60,11 @@ class AdminController {
         if ($id == $_SESSION['usuario_id']) {
             return "No puedes eliminar tu propia cuenta.";
         }
+
+        // Check if user has sales
+        if ($this->userDAO->hasSales($id)) {
+            return "No se puede eliminar este usuario porque tiene ventas registradas.";
+        }
         
         // Get user info before deletion for logging
         $stmt_info = $this->db->prepare("SELECT usuario FROM usuarios WHERE id = ?");
@@ -82,5 +87,47 @@ class AdminController {
             return true;
         }
         return "Error al eliminar usuario.";
+    }
+
+    public function editUser($id, $data) {
+        $nombre = $data['nombre'] ?? '';
+        $correo = $data['correo'] ?? '';
+        $telefono = $data['telefono'] ?? '';
+        $rol = $data['rol'] ?? '';
+
+        if ($this->userDAO->updateUserData($id, $nombre, $correo, $telefono, $rol)) {
+            // Log user edit
+            Logger::getInstance()->logUserAction(
+                $_SESSION['usuario_id'], 
+                'Editar usuario', 
+                "ID: {$id}"
+            );
+            return true;
+        }
+        return "Error al actualizar usuario.";
+    }
+
+    public function activateUser($id) {
+        if ($this->userDAO->activateUser($id)) {
+            Logger::getInstance()->logUserAction(
+                $_SESSION['usuario_id'], 
+                'Activar usuario', 
+                "ID: {$id}"
+            );
+            return true;
+        }
+        return "Error al activar usuario.";
+    }
+
+    public function deactivateUser($id) {
+        if ($this->userDAO->deactivateUser($id)) {
+            Logger::getInstance()->logUserAction(
+                $_SESSION['usuario_id'], 
+                'Desactivar usuario', 
+                "ID: {$id}"
+            );
+            return true;
+        }
+        return "Error al desactivar usuario.";
     }
 }

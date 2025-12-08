@@ -15,6 +15,12 @@ class AuthController {
         $user = $this->userDAO->findByUsername($username);
 
         if ($user && password_verify($password, $user['clave'])) {
+            // Verificar si el usuario está activo
+            if (isset($user['activo']) && $user['activo'] == 0) {
+                Logger::getInstance()->logLogin(null, $username, false, 'Usuario desactivado');
+                return "Usuario desactivado. Contacte al administrador.";
+            }
+
             if (session_status() === PHP_SESSION_NONE) {
                 session_start();
             }
