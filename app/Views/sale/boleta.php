@@ -44,12 +44,12 @@
 <div class="boleta-container">
     <!-- 1. Encabezado -->
     <div class="header text-center">
-        <h2 class="bold">BOTICA "LA ESQUINITA"</h2>
+        <h2 class="bold">BOTICA JhireFarma</h2>
         <p>RUC: 20123456789</p>
         <p>Av. Principal 123, Lima, Perú</p>
         <p>Venta de Productos Farmacéuticos</p>
         <p>Tel: (01) 555-1234</p>
-        <p>www.boticaesquinita.com</p>
+        <p>www.boticaJhireFarma.com</p>
     </div>
 
     <!-- 2. Título -->

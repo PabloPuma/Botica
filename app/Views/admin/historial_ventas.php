@@ -89,8 +89,8 @@ $ventas = $salesDAO->getSalesHistory($filters);
                 <tr>
                     <th>ID</th>
                     <th>Fecha</th>
-                    <th>Usuario</th>
-                    <th>Rol</th>
+                    <th>Vendedor</th>
+                    <th>Cliente</th>
                     <th>Total</th>
                     <th>Acciones</th>
                 </tr>
@@ -102,11 +102,18 @@ $ventas = $salesDAO->getSalesHistory($filters);
                         <td><?php echo $v['id']; ?></td>
                         <td><?php echo $v['fecha']; ?></td>
                         <td>
-                            <div class="fw-bold"><?php echo htmlspecialchars($v['usuario_nombre']); ?></div>
-                            <small class="text-muted"><?php echo htmlspecialchars($v['usuario']); ?></small>
+                            <?php if ($v['vendedor_nombre']): ?>
+                                <div class="fw-bold"><?php echo htmlspecialchars($v['vendedor_nombre']); ?></div>
+                                <small class="text-muted"><?php echo htmlspecialchars($v['vendedor_usuario']); ?></small>
+                                <br><span class="badge bg-success"><?php echo ucfirst($v['vendedor_rol']); ?></span>
+                            <?php else: ?>
+                                <span class="text-muted">Auto-registro</span>
+                            <?php endif; ?>
                         </td>
                         <td>
-                            <span class="badge bg-secondary"><?php echo ucfirst($v['rol']); ?></span>
+                            <div class="fw-bold"><?php echo htmlspecialchars($v['cliente_nombre']); ?></div>
+                            <small class="text-muted"><?php echo htmlspecialchars($v['cliente_usuario']); ?></small>
+                            <br><span class="badge bg-info"><?php echo ucfirst($v['cliente_rol']); ?></span>
                         </td>
                         <td class="fw-bold text-success">S/ <?php echo number_format($v['total'], 2); ?></td>
                         <td>

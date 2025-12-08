@@ -20,12 +20,13 @@ class AdminController {
     }
 
     public function getAllUsers() {
-        $result = $this->db->query("SELECT id, nombre, usuario, rol FROM usuarios");
+        $result = $this->db->query("SELECT id, nombre, dni, usuario, rol FROM usuarios");
         return $result;
     }
 
     public function createUser($data) {
         $nombre = $data['nombre'];
+        $dni = $data['dni'] ?? null;
         $usuario = $data['usuario'];
         $clave = $data['clave'];
         $rol = $data['rol'];
@@ -34,7 +35,12 @@ class AdminController {
             return "El usuario ya existe.";
         }
 
-        if ($this->userDAO->create($nombre, $usuario, $clave, $rol)) {
+        // Validar DNI único
+        if ($dni && $this->userDAO->findByDNI($dni)) {
+            return "El DNI ya está registrado.";
+        }
+
+        if ($this->userDAO->create($nombre, $usuario, $clave, $rol, $dni)) {
             // Log user creation
             if (isset($_SESSION['usuario_id'])) {
                 Logger::getInstance()->logUserAction(

@@ -161,9 +161,12 @@ class SalesDAO {
 
     // Operaciones de Historial y Exportación
     public function getSalesHistory($filters = []) {
-        $sql = "SELECT v.id, v.fecha, v.total, u.nombre as usuario_nombre, u.rol, u.usuario 
+        $sql = "SELECT v.id, v.fecha, v.total, 
+                u_cliente.nombre as cliente_nombre, u_cliente.rol as cliente_rol, u_cliente.usuario as cliente_usuario,
+                u_vendedor.nombre as vendedor_nombre, u_vendedor.rol as vendedor_rol, u_vendedor.usuario as vendedor_usuario
                 FROM ventas v 
-                JOIN usuarios u ON v.id_usuario = u.id 
+                JOIN usuarios u_cliente ON v.id_usuario = u_cliente.id 
+                LEFT JOIN usuarios u_vendedor ON v.id_vendedor = u_vendedor.id
                 WHERE 1=1";
         
         $types = "";
@@ -181,16 +184,16 @@ class SalesDAO {
             $params[] = $filters['end_date'];
         }
 
-        // Filtrar por ID de usuario específico
+        // Filtrar por ID de usuario específico (cliente)
         if (!empty($filters['user_id'])) {
             $sql .= " AND v.id_usuario = ?";
             $types .= "i";
             $params[] = $filters['user_id'];
         }
 
-        // Filtrar por Rol
+        // Filtrar por Rol (del cliente)
         if (!empty($filters['role'])) {
-            $sql .= " AND u.rol = ?";
+            $sql .= " AND u_cliente.rol = ?";
             $types .= "s";
             $params[] = $filters['role'];
         }

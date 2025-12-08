@@ -75,6 +75,10 @@ switch ($route) {
         requireAuth(['vendedor']);
         require __DIR__ . '/../app/Views/vendedor/historial_ventas.php';
         break;
+    case 'vendedor/perfil':
+        requireAuth(['vendedor']);
+        require __DIR__ . '/../app/Views/vendedor/perfil.php';
+        break;
 
     // --- ADMIN ROUTES ---
     case 'admin/dashboard':
@@ -101,6 +105,10 @@ switch ($route) {
         requireAuth(['admin']);
         require __DIR__ . '/../app/Views/admin/historial_ventas.php';
         break;
+    case 'admin/perfil':
+        requireAuth(['admin']);
+        require __DIR__ . '/../app/Views/admin/perfil.php';
+        break;
 
     // --- EXPORT ROUTES ---
     case 'export/history':
@@ -121,6 +129,10 @@ switch ($route) {
     case 'cliente/pedidos':
         requireAuth(['cliente']);
         require __DIR__ . '/../app/Views/cliente/pedidos.php';
+        break;
+    case 'cliente/perfil':
+        requireAuth(['cliente']);
+        require __DIR__ . '/../app/Views/cliente/perfil.php';
         break;
 
     // --- SHARED ROUTES ---

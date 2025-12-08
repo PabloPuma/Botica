@@ -32,6 +32,11 @@ $current_route = $_GET['route'] ?? '';
                         <i class="bi bi-clock-history me-1"></i> Historial
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link <?php echo $current_route === 'vendedor/perfil' ? 'active' : ''; ?>" href="index.php?route=vendedor/perfil">
+                        <i class="bi bi-person-circle me-1"></i> Mi Perfil
+                    </a>
+                </li>
                 <li class="nav-item ms-lg-3">
                     <a class="nav-link btn btn-outline-light btn-sm" href="index.php?route=logout" style="border: 2px solid white;">
                         <i class="bi bi-box-arrow-right me-1"></i> Salir

@@ -12,6 +12,7 @@ $success = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nombre = $_POST['nombre'] ?? '';
+    $dni = $_POST['dni'] ?? '';
     $usuario = $_POST['usuario'] ?? '';
     $clave = $_POST['clave'] ?? '';
     $clave_confirm = $_POST['clave_confirm'] ?? '';
@@ -21,10 +22,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($clave !== $clave_confirm) {
         $error = 'Las contraseñas no coinciden';
+    } elseif ($userDAO->findByDNI($dni)) {
+        $error = 'El DNI ya está registrado';
     } elseif ($userDAO->findByUsername($usuario)) {
         $error = 'El usuario ya existe';
     } else {
-        if ($userDAO->create($nombre, $usuario, $clave, 'cliente')) {
+        if ($userDAO->create($nombre, $usuario, $clave, 'cliente', $dni)) {
             $success = '¡Registro exitoso! Redirigiendo...';
             header("refresh:2;url=index.php?route=login");
         } else {
@@ -81,18 +84,34 @@ require __DIR__ . '/../app/Views/layouts/header.php';
                 </div>
 
                 <div class="col-md-6 form-group">
-                    <label for="usuario">
-                        <i class="bi bi-person-circle me-2"></i>Usuario
+                    <label for="dni">
+                        <i class="bi bi-card-text me-2"></i>DNI
                     </label>
                     <input 
                         type="text" 
-                        id="usuario" 
-                        name="usuario" 
+                        id="dni" 
+                        name="dni" 
                         class="form-control" 
-                        placeholder="Usuario"
+                        placeholder="DNI"
+                        pattern="[0-9]{8}"
+                        maxlength="8"
                         required 
                     />
                 </div>
+            </div>
+
+            <div class="form-group">
+                <label for="usuario">
+                    <i class="bi bi-person-circle me-2"></i>Usuario
+                </label>
+                <input 
+                    type="text" 
+                    id="usuario" 
+                    name="usuario" 
+                    class="form-control" 
+                    placeholder="Usuario"
+                    required 
+                />
             </div>
 
             <div class="form-group">

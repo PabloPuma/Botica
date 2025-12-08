@@ -50,6 +50,7 @@ $usuarios = $adminController->getAllUsers();
                     <tr>
                         <th>ID</th>
                         <th>Nombre</th>
+                        <th>DNI</th>
                         <th>Usuario</th>
                         <th>Rol</th>
                         <th>Acciones</th>
@@ -60,6 +61,7 @@ $usuarios = $adminController->getAllUsers();
                     <tr>
                         <td><?php echo $u['id']; ?></td>
                         <td><?php echo htmlspecialchars($u['nombre']); ?></td>
+                        <td><?php echo htmlspecialchars($u['dni'] ?? 'N/A'); ?></td>
                         <td><?php echo htmlspecialchars($u['usuario']); ?></td>
                         <td>
                             <span class="badge <?php 
@@ -99,6 +101,10 @@ $usuarios = $adminController->getAllUsers();
                     <div class="mb-3">
                         <label>Nombre Completo</label>
                         <input type="text" name="nombre" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>DNI</label>
+                        <input type="text" name="dni" class="form-control" pattern="[0-9]{8}" maxlength="8" placeholder="8 dígitos" required>
                     </div>
                     <div class="mb-3">
                         <label>Usuario (Login)</label>
