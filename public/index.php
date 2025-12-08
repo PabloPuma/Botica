@@ -123,6 +123,14 @@ switch ($route) {
         require __DIR__ . '/../app/Views/cliente/pedidos.php';
         break;
 
+    // --- SHARED ROUTES ---
+    case 'comprobante':
+        requireAuth(['admin', 'vendedor', 'cliente']);
+        $saleController = new SaleController();
+        $id = $_GET['id'] ?? 0;
+        $saleController->showReceipt($id);
+        break;
+
     default:
         echo "404 Not Found";
         break;

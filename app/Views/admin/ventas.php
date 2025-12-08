@@ -14,11 +14,16 @@ $success = '';
 $error = '';
 $msg = '';
 
+if (isset($_GET['error'])) {
+    $error = htmlspecialchars($_GET['error']);
+}
 // Handle Checkout
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['checkout'])) {
     $res = $saleController->checkout($id_usuario);
     if (is_numeric($res)) {
-        $success = "Venta registrada con éxito! ID Venta: " . $res;
+        // Redirect to Boleta
+        header("Location: index.php?route=comprobante&id=" . $res);
+        exit();
     } else {
         $error = $res;
     }
@@ -36,8 +41,13 @@ if (isset($_GET['remove'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_quantity'])) {
     $id_producto = $_POST['id_producto'];
     $nueva_cantidad = (int)$_POST['nueva_cantidad'];
-    $saleController->updateCartItem($id_usuario, $id_producto, $nueva_cantidad);
-    header("Location: index.php?route=admin/ventas");
+    $res = $saleController->updateCartItem($id_usuario, $id_producto, $nueva_cantidad);
+    
+    if ($res === true) {
+        header("Location: index.php?route=admin/ventas");
+    } else {
+        header("Location: index.php?route=admin/ventas&error=" . urlencode($res));
+    }
     exit();
 }
 
@@ -45,8 +55,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_quantity'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_cart'])) {
     $id_producto = $_POST['id_producto'];
     $cantidad = (int)$_POST['cantidad'];
-    if ($saleController->addToCart($id_usuario, $id_producto, $cantidad)) {
+    $res = $saleController->addToCart($id_usuario, $id_producto, $cantidad);
+    
+    if ($res === true) {
         $msg = "Producto agregado al carrito";
+    } elseif (is_string($res)) {
+        $error = $res;
     } else {
         $error = "Error al agregar al carrito";
     }
@@ -112,8 +126,24 @@ $total = 0;
             </table>
             
             <?php if ($total > 0): ?>
-            <form method="POST">
-                <button type="submit" name="checkout" class="btn btn-success w-100 btn-lg">Registrar Venta</button>
+            <!-- Client Identification Section -->
+            <div class="card mb-3">
+                <div class="card-body p-2">
+                    <h6 class="card-title">Datos del Cliente</h6>
+                    <div class="input-group mb-2">
+                        <input type="text" id="clientDni" class="form-control form-control-sm" placeholder="DNI" maxlength="8">
+                        <button class="btn btn-sm btn-info" type="button" onclick="searchClient()">Buscar</button>
+                    </div>
+                    <div id="clientInfo" class="small mb-2 fw-bold text-primary"></div>
+                    <button id="btnRegisterClient" class="btn btn-sm btn-warning w-100 mb-2" style="display:none;" data-bs-toggle="modal" data-bs-target="#registerClientModal">Registrar Nuevo Cliente</button>
+                    <input type="text" id="clientNameDisplay" class="form-control form-control-sm mb-2" placeholder="Nombre del Cliente (o buscar por DNI)">
+                </div>
+            </div>
+
+            <form method="POST" id="checkoutForm">
+                <input type="hidden" name="client_id" id="checkoutClientId">
+                <input type="hidden" name="checkout" value="1">
+                <button type="button" onclick="handleCheckout()" class="btn btn-success w-100 btn-lg">Registrar Venta</button>
             </form>
             <?php endif; ?>
         </div>
@@ -156,9 +186,167 @@ $total = 0;
     </div>
 </div>
 
+
+
+<!-- Modal Register Client -->
+<div class="modal fade" id="registerClientModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Registrar Nuevo Cliente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-2">
+                    <label>DNI</label>
+                    <input type="text" id="regDni" class="form-control" maxlength="8">
+                </div>
+                <div class="mb-2">
+                    <label>Nombre Completo</label>
+                    <input type="text" id="regNombre" class="form-control">
+                </div>
+                <div class="mb-2">
+                    <label>Dirección</label>
+                    <input type="text" id="regDireccion" class="form-control">
+                </div>
+                <div class="mb-2">
+                    <label>Teléfono</label>
+                    <input type="text" id="regTelefono" class="form-control">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="registerClient()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
+function searchClient() {
+    const dni = document.getElementById('clientDni').value;
+    if (dni.length < 8) { alert("Ingrese DNI de 8 dígitos"); return; }
+    
+    fetch('api/search_client.php?dni=' + dni)
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            document.getElementById('clientInfo').innerText = "Cliente Encontrado";
+            document.getElementById('clientNameDisplay').value = data.data.nombre;
+            document.getElementById('checkoutClientId').value = data.data.id;
+            document.getElementById('btnRegisterClient').style.display = 'none';
+        } else {
+            document.getElementById('clientInfo').innerText = "Cliente no encontrado";
+            document.getElementById('clientNameDisplay').value = "";
+            document.getElementById('checkoutClientId').value = "";
+            document.getElementById('btnRegisterClient').style.display = 'block';
+            
+            // Pre-fill modal DNI
+            document.getElementById('regDni').value = dni;
+        }
+    });
+}
+
+function registerClient() {
+    const dni = document.getElementById('regDni').value;
+    const nombre = document.getElementById('regNombre').value;
+    const direccion = document.getElementById('regDireccion').value;
+    const telefono = document.getElementById('regTelefono').value;
+
+    const formData = new FormData();
+    formData.append('dni', dni);
+    formData.append('nombre', nombre);
+    formData.append('direccion', direccion);
+    formData.append('telefono', telefono);
+
+    fetch('api/register_client.php', { method: 'POST', body: formData })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            alert(data.message);
+            // Auto Select
+            document.getElementById('clientDni').value = dni;
+            document.getElementById('clientNameDisplay').value = nombre;
+            document.getElementById('checkoutClientId').value = data.id;
+            
+            // Close modal
+            var modalEl = document.getElementById('registerClientModal');
+            var modal = bootstrap.Modal.getInstance(modalEl);
+            modal.hide();
+            
+            document.getElementById('btnRegisterClient').style.display = 'none';
+        } else {
+            alert(data.message);
+        }
+    });
+}
+
+
+function handleCheckout() {
+    const clientId = document.getElementById('checkoutClientId').value;
+    const dni = document.getElementById('clientDni').value.trim();
+    const nombre = document.getElementById('clientNameDisplay').value.trim();
+    
+    // If client selected (ID exists), or fields empty (Anonymous), submit directly
+    if (clientId || (!dni && !nombre)) {
+        document.getElementById('checkoutForm').submit();
+        return;
+    }
+    
+    // If DNI and Name provided but no ID (Manual Entry), try to register/find
+    if (dni && nombre) {
+        if (dni.length !== 8) {
+            alert("El DNI debe tener 8 dígitos.");
+            return;
+        }
+        
+        // Auto-register "Quick Client"
+        const formData = new FormData();
+        formData.append('dni', dni);
+        formData.append('nombre', nombre);
+        formData.append('direccion', '-'); // Default
+        formData.append('telefono', '-'); // Default
+        
+        fetch('api/register_client.php', { method: 'POST', body: formData })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById('checkoutClientId').value = data.id;
+                document.getElementById('checkoutForm').submit();
+            } else {
+                // If error (e.g. DNI exists), try search first or alert
+                // Loose check for "existe", "duplicado", or "registrado"
+                const msg = data.message.toLowerCase();
+                if (msg.includes('exist') || msg.includes('duplic') || msg.includes('registrado')) {
+                    // Try to search to get ID
+                    fetch('api/search_client.php?dni=' + dni)
+                    .then(r => r.json())
+                    .then(d => {
+                        if (d.success) {
+                            document.getElementById('checkoutClientId').value = d.data.id;
+                            document.getElementById('checkoutForm').submit();
+                        } else {
+                            alert("Error: El cliente ya existe pero no se pudo recuperar. Busquele por DNI. " + data.message);
+                        }
+                    });
+                } else {
+                     alert("Error al registrar: " + data.message);
+                }
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert("Error de conexión: " + err.message);
+        });
+    } else {
+        // Partial info
+        alert("Para registrar un cliente rápido, ingrese DNI y Nombre.");
+    }
+}
+
 // AJAX for add to cart - prevents page reload and scroll
 document.querySelectorAll('.add-to-cart-form').forEach(form => {
+
+
     form.addEventListener('submit', function(e) {
         e.preventDefault();
         

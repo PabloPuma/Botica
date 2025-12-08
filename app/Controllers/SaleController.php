@@ -30,22 +30,29 @@ class SaleController {
 
     public function checkout($userId, $deliveryMethod = 'tienda') {
         $cart = $this->salesDAO->getCartByUserId($userId);
-        $items = [];
+        
         $subtotal = 0;
-
+        $items = [];
+        
         while ($row = $cart->fetch_assoc()) {
-            $items[] = $row;
             $subtotal += $row['precio'] * $row['cantidad'];
+            $items[] = $row;
         }
 
         if (empty($items)) {
             return "El carrito está vacío.";
         }
 
+        // Check if a specific client is being assigned (Admin/Vendor use case)
+        $saleOwnerId = null;
+        if (isset($_POST['client_id']) && !empty($_POST['client_id'])) {
+            $saleOwnerId = (int)$_POST['client_id'];
+        }
+
         // El cálculo del total (con delivery) se hace en SalesDAO::createSale()
-        $saleId = $this->salesDAO->createSale($userId, $subtotal, $items, $deliveryMethod);
+        $saleId = $this->salesDAO->createSale($userId, $subtotal, $items, $deliveryMethod, $saleOwnerId);
         
-        if ($saleId) {
+        if (is_numeric($saleId)) {
             // Calcular total final para el log
             $costoDelivery = ($deliveryMethod === 'delivery') ? 8.00 : 0.00;
             $totalFinal = $subtotal + $costoDelivery;
@@ -53,6 +60,17 @@ class SaleController {
             Logger::getInstance()->logSale($userId, $saleId, $totalFinal);
             return $saleId;
         }
-        return "Error al procesar la venta.";
+        return $saleId; // Return error message
+    }
+
+    public function showReceipt($saleId) {
+        $sale = $this->salesDAO->getSaleById($saleId);
+        if (!$sale) {
+            die("Venta no encontrada.");
+        }
+        $detalles = $this->salesDAO->getSaleDetails($saleId);
+        
+        // Cargar vista de boleta
+        require __DIR__ . '/../Views/sale/boleta.php';
     }
 }

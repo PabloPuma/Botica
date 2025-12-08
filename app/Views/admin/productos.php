@@ -133,4 +133,32 @@ $productos = $productController->index();
     </div>
 </div>
 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const inputs = document.querySelectorAll('input[name="cantidad"]');
+    
+    inputs.forEach(input => {
+        input.addEventListener('focus', function() {
+            const currentRow = this.closest('tr');
+            document.querySelectorAll('tr.product-row').forEach(row => {
+                if (row !== currentRow) {
+                    row.querySelectorAll('input, button').forEach(el => el.disabled = true);
+                    row.style.opacity = '0.5';
+                }
+            });
+        });
+        
+        input.addEventListener('blur', function() {
+            // Small delay to prevent interference with immediate actions if needed, 
+            // though simple re-enabling usually works fine. 
+            // We re-enable everything.
+            document.querySelectorAll('tr.product-row').forEach(row => {
+                row.querySelectorAll('input, button').forEach(el => el.disabled = false);
+                row.style.opacity = '1';
+            });
+        });
+    });
+});
+</script>
+
 <?php require __DIR__ . '/../layouts/footer.php'; ?>

@@ -32,8 +32,12 @@ if (!$id_producto) {
 
 $saleController = new SaleController();
 
-if ($saleController->addToCart($id_usuario, $id_producto, $cantidad)) {
+$result = $saleController->addToCart($id_usuario, $id_producto, $cantidad);
+
+if ($result === true) {
     echo json_encode(['success' => true, 'message' => 'Producto agregado al carrito']);
+} elseif (is_string($result)) {
+    echo json_encode(['success' => false, 'message' => $result]);
 } else {
     echo json_encode(['success' => false, 'message' => 'Error al agregar al carrito']);
 }

@@ -10,12 +10,18 @@ $id_usuario = $_SESSION['usuario_id'];
 $success = '';
 $error = '';
 
+if (isset($_GET['error'])) {
+    $error = htmlspecialchars($_GET['error']);
+}
+
 // Handle Checkout
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['checkout'])) {
     $deliveryMethod = $_POST['delivery_method'] ?? 'tienda';
     $res = $saleController->checkout($id_usuario, $deliveryMethod);
     if (is_numeric($res)) {
-        $success = "¡Pedido realizado con éxito! ID: " . $res;
+        // Redirect to Boleta
+        header("Location: index.php?route=comprobante&id=" . $res);
+        exit();
     } else {
         $error = $res;
     }
@@ -25,8 +31,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['checkout'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_quantity'])) {
     $id_producto = $_POST['id_producto'];
     $nueva_cantidad = (int)$_POST['nueva_cantidad'];
-    $saleController->updateCartItem($id_usuario, $id_producto, $nueva_cantidad);
-    header("Location: index.php?route=cliente/carrito");
+    $res = $saleController->updateCartItem($id_usuario, $id_producto, $nueva_cantidad);
+    
+    if ($res === true) {
+        header("Location: index.php?route=cliente/carrito");
+    } else {
+        header("Location: index.php?route=cliente/carrito&error=" . urlencode($res));
+    }
     exit();
 }
 
@@ -137,12 +148,14 @@ $total = 0;
                                     <i class="bi bi-shop"></i> Recoger en Tienda (Gratis)
                                 </label>
                             </div>
+                            <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'cliente'): ?>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="delivery_method" id="deliveryHome" value="delivery" onchange="calcularTotal()">
                                 <label class="form-check-label" for="deliveryHome">
                                     <i class="bi bi-bicycle"></i> Delivery a Domicilio (S/ 8.00)
                                 </label>
                             </div>
+                            <?php endif; ?>
                         </div>
                         <div class="d-grid">
                             <button type="submit" name="checkout" class="btn btn-success btn-lg">
@@ -159,7 +172,8 @@ $total = 0;
     function calcularTotal() {
         // 1. Obtener valores
         var subtotal = <?php echo (float)$total; ?>;
-        var esDelivery = document.getElementById('deliveryHome').checked;
+        var deliveryInput = document.getElementById('deliveryHome');
+        var esDelivery = deliveryInput ? deliveryInput.checked : false;
         
         // 2. Calcular
         var costoDelivery = esDelivery ? 8.00 : 0.00;
@@ -170,10 +184,12 @@ $total = 0;
         
         // Mostrar/Ocultar fila de delivery
         var filaDelivery = document.getElementById('costoDeliveryRow');
-        if (esDelivery) {
-            filaDelivery.style.display = 'table-row';
-        } else {
-            filaDelivery.style.display = 'none';
+        if (filaDelivery) {
+            if (esDelivery) {
+                filaDelivery.style.display = 'table-row';
+            } else {
+                filaDelivery.style.display = 'none';
+            }
         }
     }
     </script>

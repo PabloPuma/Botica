@@ -38,11 +38,13 @@ class ProductDAO {
     }
     
     public function logStockHistory($producto_id, $tipo_movimiento, $cantidad, $usuario_id = 1) {
-        // Assuming user_id 1 for now or we need to pass it. 
-        // Ideally we should have a separate HistoryDAO or similar, but keeping it simple for now as per request.
-        // Checking table structure for historial_stock might be needed.
-        $stmt = $this->db->prepare("INSERT INTO historial_stock (producto_id, tipo_movimiento, cantidad, usuario_id, fecha) VALUES (?, ?, ?, ?, NOW())");
-        $stmt->bind_param("isii", $producto_id, $tipo_movimiento, $cantidad, $usuario_id);
+        // Corrected query to match table structure: id_producto instead of producto_id, and removed usuario_id
+        $stmt = $this->db->prepare("INSERT INTO historial_stock (id_producto, tipo_movimiento, cantidad, fecha) VALUES (?, ?, ?, NOW())");
+        if (!$stmt) {
+             // Basic error handling if prepare fails
+             return false;
+        }
+        $stmt->bind_param("isi", $producto_id, $tipo_movimiento, $cantidad);
         return $stmt->execute();
     }
 }
