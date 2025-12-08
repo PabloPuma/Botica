@@ -23,8 +23,8 @@ if (empty($dni) || empty($nombre)) {
 }
 
 // DB Connection
-$config = require __DIR__ . '/../../app/Config/Database.php';
-$db = new mysqli($config['host'], $config['username'], $config['password'], $config['database']);
+use App\Config\Database;
+$db = Database::getInstance()->getConnection();
 
 if ($db->connect_error) {
     echo json_encode(['success' => false, 'message' => 'Error de conexión: ' . $db->connect_error]);

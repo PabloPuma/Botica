@@ -30,8 +30,9 @@ if (empty($dni)) {
 // Connect to DB (using the app's standard way)
 // Use the shared database connection if possible.
 // Let's create a temporary instance of a controller or model to get the DB, or just new mysqli like in DAO.
-$config = require __DIR__ . '/../../app/Config/Database.php';
-$db = new mysqli($config['host'], $config['username'], $config['password'], $config['database']);
+// Connect to DB
+use App\Config\Database;
+$db = Database::getInstance()->getConnection();
 
 if ($db->connect_error) {
     echo json_encode(['success' => false, 'message' => 'Error de conexión']);
